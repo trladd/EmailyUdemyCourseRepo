@@ -7,4 +7,5 @@ app.get('/', (req, res) => {
     });
 });
 
-app.listen(5000);
+const PORT = process.env.PORT || 5000; //This is saying use the environment variable from heroku, otherwise use 5000
+app.listen(PORT);
