@@ -1,9 +1,15 @@
 const express = require('express'); //import express from 'express'; would be the way to do it if node.js had es2015 modules (which can be used in react)
 const app = express();
 
+app.get('/Dadalyn', (req, res) => {
+    res.send({
+        hi: 'Hi Dadalyn'
+    });
+});
+
 app.get('/', (req, res) => {
     res.send({
-        hi: 'there updated'
+        hi: 'Hi This is the root'
     });
 });
 
