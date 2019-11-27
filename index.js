@@ -3,7 +3,7 @@ require('./services/passport'); // has no const because there is no return - jus
 
 const app = express();
 
-require('./routes/authRoutes')(app);
+require('./routes/authRoutes')(app);//this is valid because the passport file returns a method, so we are then running that method with app right when we get it
 
 
 const PORT = process.env.PORT || 5000; //This is saying use the environment variable from heroku, otherwise use 5000
