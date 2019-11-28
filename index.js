@@ -1,6 +1,7 @@
 const express = require('express'); //import express from 'express'; would be the way to do it if node.js had es2015 modules (which can be used in react)
 const mongoose = require('mongoose');
 const keys = require('./config/keys');
+require('./models/user');
 require('./services/passport'); // has no const because there is no return - just running that code
 
 mongoose.connect(keys.mongoURI);
