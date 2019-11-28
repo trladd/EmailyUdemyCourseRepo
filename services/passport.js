@@ -10,20 +10,19 @@ passport.use(new GoogleStrategy({
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback' // keep in mind that this needs to be added as an allowed redirect URI on google for security concerns
 }, (accessToken, refreshToken, profile, done) => {
-    console.log('access token: ', accessToken);
-    console.log('refresh token: ', refreshToken);
-    console.log('profile:  ', profile);
     User.findOne({
             googleId: profile.id
         })
         .then((existingUser) => { // .then is a promise which will help with the asynchronous call
             if (existingUser) {
                 //we already have a record with the given profile ID
+                done(null,existingUser);
             } else {
                 //we don't have a user already
                 new User({
                     googleId: profile.id
-                }).save(); //this creates the user and saves them to the database
+                }).save()
+                .then(user => done(null, user)); //this creates the user and saves them to the database
             }
         })
 
