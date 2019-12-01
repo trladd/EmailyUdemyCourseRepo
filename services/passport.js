@@ -5,6 +5,12 @@ const keys = require('../config/keys');
 
 const User = mongoose.model('users'); // pulls the schema out of mongoose
 
+/**
+ * The difference between using cookie-session and express-session. Cookie-session stores it in the browser. Express session only stores
+ * a reference to the session information in the browser cookie and so it will then store the session information on a serverside DB
+ * Using express session will allow for more information to be stored while cookie-session is limited by browser cookie size limit
+ */
+
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
