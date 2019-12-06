@@ -4,7 +4,7 @@ import {FETCH_USER} from './types';
 /**
  * Using redux thunk this is 
  */
-const fetchUser = () => {
+export const fetchUser = () => {
     return function(dispatch){
         axios
             .get('api/current_user')
