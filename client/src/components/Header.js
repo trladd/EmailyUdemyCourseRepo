@@ -7,10 +7,10 @@ class Header extends Component {
             case null:
                 return;
             case false:
-                return (<li><a href='auth/google'>Login With Google</a></li>);
+                return (<li><a href='/auth/google'>Login With Google</a></li>);
     
             default:
-                return (<li><a href='api/logout'>Logout</a></li>);
+                return (<li><a href='/api/logout'>Logout</a></li>);
         }
     }
 
@@ -19,7 +19,7 @@ class Header extends Component {
         return (
             <nav>
                 <div className="nav-wrapper deep-orange darken-4 z-depth-3">
-                    <a className="left brand-logo">
+                    <a href = '/' className="left brand-logo">
                         Emaily
                     </a>
                     <ul className="right">
