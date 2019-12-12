@@ -6,7 +6,8 @@ const keys = require('./config/keys');
 require('./models/user');
 require('./services/passport'); // has no const because there is no return - just running that code
 
-mongoose.connect(keys.mongoURI);
+console.log("Mongo URI: " + keys.mongoURI);
+mongoose.connect(keys.mongoURI,{ useNewUrlParser: true, useUnifiedTopology: true  });
 
 const app = express();
 
