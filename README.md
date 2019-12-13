@@ -8,4 +8,4 @@ To run this on the server do 'npm start' or node index.js
 Heroku CLI
 First Heroku login
 To add heroku as a remote do 'git remote add heroku https://git.heroku.com/stormy-lake-36747.git'
-To push this to heroku do 'git push heroku master'
+To push this to heroku do 'git push heroku master' (pushing non)
