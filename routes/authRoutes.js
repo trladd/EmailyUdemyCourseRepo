@@ -5,11 +5,17 @@ module.exports = app => {
         scope: ['profile', 'email']
     }))
     
-    app.get('/auth/google/callback', passport.authenticate('google')); //has code query parameter now and so will exchange code for user profile
+    app.get(
+        '/auth/google/callback', 
+        passport.authenticate('google'),
+        (req, res) => {
+            res.redirect('/surveys');
+        }
+    ); //has code query parameter now and so will exchange code for user profile
 
     app.get('/api/logout', (req,res) => {
         req.logout();
-        res.send(req.user);
+        res.redirect('/');
     });
 
     app.get('/api/current_user', (req, res) => {
