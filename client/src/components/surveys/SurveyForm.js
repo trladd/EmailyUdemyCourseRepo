@@ -23,7 +23,7 @@ class SurveyForm extends Component{
                     <Link to="/surveys" className="red btn-flat left white-text">
                         Cancel
                     </Link>
-                    <button className="teal btn-flat right white-text" type="submit">
+                    <button className="blue btn-flat right white-text" type="submit">
                         Next
                         <i className="material-icons right">done</i>
                     </button>
@@ -51,8 +51,8 @@ function validate(values){
             errors[name] = 'You must provide a value for ' + label;
         }
     });
-    if(!errors.emails){
-        errors.emails = validateEmails(values.emails || '');
+    if(!errors.recipients){
+        errors.recipients = validateEmails(values.recipients || '');
     }
  
 
