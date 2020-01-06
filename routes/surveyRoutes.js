@@ -13,7 +13,7 @@ const Survey = mongoose.model('surveys');
 
 module.exports = async app => {
 
-    app.get('/api/surveys/thanks', (req, res) => {
+    app.get('/api/surveys/thanks/:surveyId/:choice', (req, res) => {
         res.send('Thanks for voting!')
     })
 
@@ -58,7 +58,7 @@ module.exports = async app => {
         const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId');
         console.log(uniqueEvents);
         res.send({});   //SAME THING IS BELOW JUST WITH SOME CLEANUP AND CHAINING*/
-        const events = _.chain(req.body)
+        _.chain(req.body)
             .map( ({email, url}) => {
                 const match = p.test(new URL(url).pathname);
                 if(match){
@@ -67,6 +67,19 @@ module.exports = async app => {
             })
             .compact()
             .uniqBy( 'email', 'surveyId')
+            .each(({ surveyId, email, choice }) => {
+                Survey.updateOne({
+                    _id:surveyId,
+                    recipients:{
+                        $elemMatch: { email: email, responded: false } //finds the element that matches to th other one
+                    }
+                },{
+                    $inc: { [choice]: 1},
+                    $set: {'recipients.$.responded': true, //the $ sign lines up with the elemmatch above
+                    lastResponded: new Date()}
+                }).exec();
+            })
+            .value();
         res.send({});
 
 
