@@ -9,3 +9,6 @@ Heroku CLI
 First Heroku login
 To add heroku as a remote do 'git remote add heroku https://git.heroku.com/stormy-lake-36747.git'
 To push this to heroku do 'git push heroku master' (pushing non)
+
+
+nGrok - in a seperate window run npx ngrok http 5000
