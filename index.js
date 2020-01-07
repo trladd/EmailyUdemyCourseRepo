@@ -5,6 +5,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/user');
+require('./models/Survey');
 require('./services/passport'); // has no const because there is no return - just running that code
 
 mongoose.connect(keys.mongoURI,{ useNewUrlParser: true, useUnifiedTopology: true  });
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 
 require('./routes/authRoutes')(app);//this is valid because the passport file returns a method, so we are then running that method with app right when we get it
 require('./routes/billingRoutes')(app);//again returns a function that immediatly runs passing app to the function
+require('./routes/surveyRoutes')(app);
 
 //reason for only doing this in production is because we don't want to run npm build on client each time to see changes in dev
 if (process.env.NODE_ENV === 'production'){
