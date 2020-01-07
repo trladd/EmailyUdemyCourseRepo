@@ -13,19 +13,25 @@ const Survey = mongoose.model('surveys');
 
 module.exports = async app => {
 
+    app.get('/api/surveys', requireLogin, async (req, res) => {
+        const surveys = await Survey.find({_user: req.user.id})
+            .select({recipients: false });
+        res.send(surveys);
+    });
+
     app.get('/api/surveys/thanks/:surveyId/:choice', (req, res) => {
         res.send('Thanks for voting!')
-    })
+    });
 
     app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
         const {title, subject, body, recipients} = req.body;
-
+        const {id} = req.user
         const survey = new Survey({
             title, //same as saying 'title: title'
             subject,
             body,
             recipients: recipients.split(',').map(email => ({email: email.trim()})), // short for  '=> {return {email:email}}'
-            user: req.user.id,
+            _user: id,
             dateSent: Date.now()
         });
 
