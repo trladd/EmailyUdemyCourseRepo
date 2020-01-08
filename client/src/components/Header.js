@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Payments from './Payments';
 import M from "materialize-css/dist/js/materialize.min.js";
 
 class Header extends Component {
@@ -14,7 +13,7 @@ class Header extends Component {
         });
     }
 
-    renderAuthContent() {
+    renderAuthContent(headerType) {
         switch (this.props.auth){
             case null:
                 return;
@@ -23,11 +22,12 @@ class Header extends Component {
     
             default:
                 return [
-                <li key="1"><Payments /></li>,
+                
                 <li key="2" style={{ margin: '0 10px'}}>
                     Credits: {this.props.auth.credits}
                 </li>,
-                <li key="3"><a href='/api/logout'>Logout</a></li>
+                <li key="3"><a href='/api/logout'>Logout</a></li>,
+                <li key="44"><Link to='/account'><i className="material-icons">account_box</i></Link></li>
                 
                 
             ];
@@ -37,7 +37,7 @@ class Header extends Component {
     /**
      * Renders content that will display in the header regardless of authentication status
      */
-    renderCommonContent() {
+    renderCommonContent(headerType) {
         return [
             <li key="about"><Link to='/about'>About</Link></li>
         ];
@@ -57,15 +57,15 @@ class Header extends Component {
                         </Link>
                         <a href="#" data-target="mobileTray" className="sidenav-trigger"><i className="material-icons">menu</i></a>
                         <ul className="right hide-on-med-and-down">
-                            {this.renderCommonContent()}
-                            {this.renderAuthContent()}
+                            {this.renderCommonContent("bar")}
+                            {this.renderAuthContent("bar")}
                         </ul>
                         
                     </div>
                 </nav>
                 <ul className="sidenav" id="mobileTray">
-                    {this.renderCommonContent()}
-                    {this.renderAuthContent()}
+                    {this.renderCommonContent("tray")}
+                    {this.renderAuthContent("tray")}
                 </ul>
             </div>
            

@@ -8,6 +8,7 @@ import Landing from './Landing';
 import Dashboard from './Dashboard';
 import SurveyNew from './surveys/SurveyNew';
 import About from './About';
+import Account from './account/AccountSettingsPage';
 
 
 class App extends Component {
@@ -26,6 +27,7 @@ class App extends Component {
                             <Route exact path="/surveys" component={Dashboard} />
                             <Route path="/surveys/new" component={SurveyNew} />
                             <Route path="/about" component={About} />
+                            <Route path="/account" component={Account}/>
                         </div>
                     </BrowserRouter>
                 </div>
