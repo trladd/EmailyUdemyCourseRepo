@@ -4,7 +4,8 @@ const Landing = () => {
     return(
         <div style={{textAlign: 'center'}}>
             <h1>Emaily!</h1>
-            Collect feedback from your customers
+            <i className="material-icons large">email</i>
+            <p>Log in now to begin sending surveys to mass groups and collecting valueable feedback from your customers!</p>
         </div>
     );
 };
