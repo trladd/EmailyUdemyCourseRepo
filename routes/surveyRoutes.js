@@ -51,7 +51,7 @@ module.exports = async app => {
     });
 
     app.post('/api/surveys/webhooks', async (req, res) => {
-        const p = new Path('/api/surveys/:surveyId/:choice');
+        const p = new Path('/api/surveys/thanks/:surveyId/:choice');
 
         /*
         const events = _.map(req.body, ({email, url}) => {
@@ -64,29 +64,35 @@ module.exports = async app => {
         const uniqueEvents = _.uniqBy(compactEvents, 'email', 'surveyId');
         console.log(uniqueEvents);
         res.send({});   //SAME THING IS BELOW JUST WITH SOME CLEANUP AND CHAINING*/
-        _.chain(req.body)
-            .map( ({email, url}) => {
-                const match = p.test(new URL(url).pathname);
-                if(match){
-                    return {email, surveyId: match.surveyId, choice: match.choice}
-                }
-            })
-            .compact()
-            .uniqBy( 'email', 'surveyId')
-            .each(({ surveyId, email, choice }) => {
-                Survey.updateOne({
-                    _id:surveyId,
-                    recipients:{
-                        $elemMatch: { email: email, responded: false } //finds the element that matches to th other one
+        try{
+            _.chain(req.body)
+                .map( ({email, url}) => {
+                    const match = p.test(new URL(url).pathname);
+                    if(match){
+                        return {email, surveyId: match.surveyId, choice: match.choice}
                     }
-                },{
-                    $inc: { [choice]: 1},
-                    $set: {'recipients.$.responded': true, //the $ sign lines up with the elemmatch above
-                    lastResponded: new Date()}
-                }).exec();
-            })
-            .value();
-        res.send({});
+                })
+                .compact()
+                .uniqBy( 'email', 'surveyId')
+                .each(({ surveyId, email, choice }) => {
+                    Survey.updateOne({
+                        _id:surveyId,
+                        recipients:{
+                            $elemMatch: { email: email, responded: false } //finds the element that matches to th other one
+                        }
+                    },{
+                        $inc: { [choice]: 1},
+                        $set: {'recipients.$.responded': true, //the $ sign lines up with the elemmatch above
+                        lastResponded: new Date()}
+                    }).exec();
+                })
+                .value();
+            }
+            catch(err){
+                console.log("An error has occurred receiving webhook\nError: " + err);
+                res.status(500).send(err);
+            }
+            res.send({});
 
 
     });
