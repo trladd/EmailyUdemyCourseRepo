@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchSurveys} from '../../actions';
 import {Link} from 'react-router-dom';
+import {Pie} from 'react-chartjs-2';
 
 class SurveyList extends Component{
     componentDidMount(){
@@ -29,19 +30,61 @@ class SurveyList extends Component{
             default:
                     return this.props.surveys.reverse().map(survey => {
                         console.log("In the map");
+                        const pieData = {
+                            labels: [
+                                'Yes',
+                                'No'
+                            ],
+                            datasets: [{
+                                data: [survey.yes, survey.no],
+                                backgroundColor: [
+                                '#81c784',
+                                '#d32f2f '
+                                ],
+                                hoverBackgroundColor: [
+                                '#c8e6c9',
+                                '#e57373'
+                                ]
+                            }]
+                        };
                         return(
-                            <div className="card blue-gray darken-1" key={survey._id}>
+                            <div className="float-text card horizontal blue-gray darken-1" key={survey._id}>
+                                <div class="card-image">
+                                <Pie 
+                                            data={pieData}
+                                            width={160}
+                                            height={160}
+                                            options={{
+                                                maintainAspectRatio: false
+                                            }}
+                                        />
+                                </div>
                                 <div className="card-content text-white">
                                     <span className="card-title">{survey.title}</span>
-                                    <p>{survey.body}</p>
-                                    <p className="right">
-                                        Sent On: {new Date(survey.dateSent).toLocaleDateString()}
-                                    </p>
+                                    <div className="row">
+                                        <div className="col s6">
+                                            <p>Email Subject: {survey.subject}</p>
+                                            <p>Email Body: {survey.body}</p>
+                                        </div>
+                                        
+                                        <div className="col s6">
+                                            <p>
+                                                Sent On: {new Date(survey.dateSent).toLocaleDateString()}
+                                            </p>
+                                            <p>
+                                                Last Response: {new Date(survey.lastResponded).toLocaleString()}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
                                 </div>
-                                <div className="card-action">
-                                    <a>Yes: {survey.yes}</a>
-                                    <a>No: {survey.no}</a>
-                                </div>
+                                
+                                <div className="col3">
+                                        
+                                    </div>
                             </div> 
                         );
                     });
