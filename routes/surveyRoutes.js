@@ -13,16 +13,48 @@ const Survey = mongoose.model('surveys');
 
 module.exports = async app => {
 
+    /**
+     * @swagger
+     *
+     * /api/surveys:
+     *   get:
+     *     description: gets a list of surveys for a user
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: object of the surveys
+     *          
+     */
     app.get('/api/surveys', requireLogin, async (req, res) => {
         const surveys = await Survey.find({_user: req.user.id})
             .select({recipients: false });
         res.send(surveys);
     });
 
-    app.get('/api/surveys/thanks/:surveyId/:choice', (req, res) => {
-        res.send('Thanks for voting!')
-    });
-
+    /**
+     * @swagger
+     *
+     * /api/surveys:
+     *   post:
+     *     description: Login to the application
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: username
+     *         description: Username to use for login.
+     *         in: formData
+     *         required: true
+     *         type: string
+     *       - name: password
+     *         description: User's password.
+     *         in: formData
+     *         required: true
+     *         type: string
+     *     responses:
+     *       200:
+     *         description: login
+     */
     app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
         const {title, subject, body, recipients} = req.body;
         const {id} = req.user
@@ -50,6 +82,18 @@ module.exports = async app => {
         
     });
 
+    /**
+     * @swagger
+     *
+     * /api/surveys/webhooks:
+     *   post:
+     *     description: Receives webhook from sendgrid and updates survey information based on received click URL parameter values
+     *       - application/json
+     *    
+     *     responses:
+     *       200:
+     *         description: login
+     */
     app.post('/api/surveys/webhooks', async (req, res) => {
         const p = new Path('/api/surveys/:surveyId/:choice');
 
