@@ -19,10 +19,6 @@ module.exports = async app => {
         res.send(surveys);
     });
 
-    app.get('/api/surveys/thanks/:surveyId/:choice', (req, res) => {
-        res.send('Thanks for voting!')
-    });
-
     app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
         const {title, subject, body, recipients} = req.body;
         const {id} = req.user
@@ -51,7 +47,7 @@ module.exports = async app => {
     });
 
     app.post('/api/surveys/webhooks', async (req, res) => {
-        const p = new Path('/api/surveys/thanks/:surveyId/:choice');
+        const p = new Path('/thanks/:surveyId/:choice');
 
         /*
         const events = _.map(req.body, ({email, url}) => {

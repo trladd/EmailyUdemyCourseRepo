@@ -9,7 +9,7 @@ import Dashboard from './Dashboard';
 import SurveyNew from './surveys/SurveyNew';
 import About from './About';
 import Account from './account/AccountSettingsPage';
-
+import Thanks from './Thanks';
 
 class App extends Component {
     componentDidMount() {
@@ -28,6 +28,7 @@ class App extends Component {
                             <Route path="/surveys/new" component={SurveyNew} />
                             <Route path="/about" component={About} />
                             <Route path="/account" component={Account}/>
+                            <Route path="/thanks" component={Thanks}/>
                         </div>
                     </BrowserRouter>
                 </div>
