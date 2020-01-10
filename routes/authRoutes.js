@@ -6,23 +6,12 @@ module.exports = app => {
      *
      * /auth/google:
      *   get:
-     *     description: Login to the application
+     *     description: Login to the application via google
      *     produces:
      *       - application/json
-     *     parameters:
-     *       - name: username
-     *         description: Username to use for login.
-     *         in: formData
-     *         required: true
-     *         type: string
-     *       - name: password
-     *         description: User's password.
-     *         in: formData
-     *         required: true
-     *         type: string
      *     responses:
      *       200:
-     *         description: login
+     *         description: passes user on to google for oauth authentication
      */
     app.get('/auth/google', passport.authenticate('google', {
         scope: ['profile', 'email']
@@ -33,23 +22,12 @@ module.exports = app => {
      *
      * /auth/google/callback:
      *   get:
-     *     description: Login to the application
+     *     description: callback for google for oauth authentication
      *     produces:
      *       - application/json
-     *     parameters:
-     *       - name: username
-     *         description: Username to use for login.
-     *         in: formData
-     *         required: true
-     *         type: string
-     *       - name: password
-     *         description: User's password.
-     *         in: formData
-     *         required: true
-     *         type: string
      *     responses:
      *       200:
-     *         description: login
+     *         description: 
      */
     app.get(
         '/auth/google/callback', 
@@ -64,12 +42,12 @@ module.exports = app => {
      *
      * /api/logout:
      *   get:
-     *     description: Login to the application
+     *     description: Logs out by clearing session information
      *     produces:
      *       - application/json
      *     responses:
      *       200:
-     *         description: login
+     *         description: logout
      */
     app.get('/api/logout', (req,res) => {
         req.logout();
@@ -87,6 +65,8 @@ module.exports = app => {
      *     responses:
      *       200:
      *         description: user
+     *       401:
+     *          description: not logged in 
      */
     app.get('/api/current_user', (req, res) => {
         res.send(req.user);

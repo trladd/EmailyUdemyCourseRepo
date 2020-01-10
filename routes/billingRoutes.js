@@ -22,6 +22,8 @@ module.exports = app => {
      *     responses:
      *       200:
      *         description: user object passed back with updated credit number
+     *       401:
+     *          description: user must be logged in to submit payment
      *              
      */
     app.post('/api/stripe', requireLogin, async (req, res) => {

@@ -24,6 +24,8 @@ module.exports = async app => {
      *     responses:
      *       200:
      *         description: object of the surveys
+     *       401:
+     *          description: user must first be logged in
      *          
      */
     app.get('/api/surveys', requireLogin, async (req, res) => {
@@ -38,23 +40,16 @@ module.exports = async app => {
      *
      * /api/surveys:
      *   post:
-     *     description: Login to the application
+     *     description: Add a new survey and subtract credits
      *     produces:
      *       - application/json
-     *     parameters:
-     *       - name: username
-     *         description: Username to use for login.
-     *         in: formData
-     *         required: true
-     *         type: string
-     *       - name: password
-     *         description: User's password.
-     *         in: formData
-     *         required: true
-     *         type: string
      *     responses:
      *       200:
-     *         description: login
+     *         description: add a survey
+     *       401:
+     *          description: user must be logged in
+     *       403:
+     *          description: user does not have enough credits
      */
     app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
         const {title, subject, body, recipients} = req.body;
