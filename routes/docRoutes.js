@@ -1,8 +1,10 @@
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 
+const swaggerCSS='.swagger-ui .topbar{background-color:#bf360c} body{background-color:#eeeeee}'
+
 var swaggerUiOptions={
-    explorer: true
+    customCss:swaggerCSS
 };
 
 const swaggerJSDocOptions={
@@ -11,6 +13,7 @@ const swaggerJSDocOptions={
         info: {
           title: 'Emaily Routes', // Title (required)
           version: '1.0.0', // Version (required)
+          description: 'This swagger document shows the routes available for my application server. This is an express server running on node.js<br><br> <b><a href="/">Link back to main site</a></b>',
         },
       },
       // Path to the API docs

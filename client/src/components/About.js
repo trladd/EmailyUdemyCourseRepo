@@ -1,4 +1,6 @@
 import React from 'react';
+import githublogo from '../images/github.png';
+import swaggerlogo from '../images/swagger.png';
 
 const About = () => {
     return(
@@ -17,7 +19,35 @@ const About = () => {
                 <li><b>Swipe</b> service for handling credit card payments</li>
                 <li><b>Heroku</b> for hosting application</li>
             </ul>
-            <h5><a href="https://github.com/trladd/EmailyUdemyCourseRepo/issues">Click here to see my github issues list of upcoming features and view the source code</a></h5>
+            <a href="https://github.com/trladd/EmailyUdemyCourseRepo/issues">
+                <div className="col s12 m7">
+                    <div className="card horizontal">
+                        <div className="card-image">
+                            <img  className="responsive-image" src={githublogo} alt="githublogo"/>
+                        </div>
+                        <div className="card-content">
+                            <h2 class="header">Feature Backlog</h2>
+                            <p>Click here to see my github issues list of upcoming features and view the source code</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="/swagger">
+                <div className="col s12 m7">
+                    <div className="card horizontal">
+                        <div className="card-image">
+                            <img className="responsive-image"src={swaggerlogo} alt="swaggerlogo"/>
+                        </div>
+                        <div className="card-content">
+                            <h2 class="header">API Documentation</h2>
+                            <p>Click here to view swagger docs for this site's backend</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            
+            <br/><br/><br/><br/><br/>
         </div>
     );
 };
