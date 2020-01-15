@@ -5,10 +5,10 @@ const mockRes = require('../testUtils/mockResponse');
 
 describe('check credits', ()=>{
     test('should be 403 if check credits is not set', async ()=>{
-        var req = mockReq({user:{credits:-1}});
+        var req = mockReq();
         const res = mockRes();
         const next = jest.fn();
-        await requireCredits(req,res,);
+        await requireCredits(req,res,next);
         expect(res.status).toHaveBeenCalledWith(403);
         expect(res.send).toHaveBeenCalledWith({error: 'Not enough credits'});
         expect(next).not.toHaveBeenCalled();
