@@ -1,10 +1,10 @@
-const requireLogin = require('../../middlewares/requireLogin');
+const requireLogin = require('../../../middlewares/requireLogin');
 
-const mockReq = require('../testUtils/mockRequest');
-const mockRes = require('../testUtils/mockResponse');
+const mockReq = require('../../testUtils/mockRequest');
+const mockRes = require('../../testUtils/mockResponse');
 
 describe('check logged in middleware', ()=>{
-    test('should be 401 if check credits is not set', async ()=>{
+    test('should be 401 if not logged in', async ()=>{
         const req= {};
         const res = mockRes();
         const next = jest.fn();

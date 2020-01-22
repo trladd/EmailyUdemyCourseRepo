@@ -1,10 +1,10 @@
-const requireCredits = require('../../middlewares/requireCredits');
+const requireCredits = require('../../../middlewares/requireCredits');
 
-const mockReq = require('../testUtils/mockRequest');
-const mockRes = require('../testUtils/mockResponse');
+const mockReq = require('../../testUtils/mockRequest');
+const mockRes = require('../../testUtils/mockResponse');
 
 describe('check credits', ()=>{
-    test('should be 403 if check credits is not set', async ()=>{
+    test('should be 403 if user does not have enough credits', async ()=>{
         var req = mockReq();
         const res = mockRes();
         const next = jest.fn();
