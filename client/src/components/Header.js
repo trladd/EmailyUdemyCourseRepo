@@ -109,7 +109,7 @@ class Header extends Component {
         >
           {/* If you want Bottom Sheet Modal then add 
         bottom-sheet class */}
-          <div className="modal-content">
+          <div className="modal-content"  style={{textAlign: 'center'}}>
               <ul>
                   <li>
                     <a className ="waves-effect btn-flat blue center white-text" href="/auth/google">Login with Google</a>
