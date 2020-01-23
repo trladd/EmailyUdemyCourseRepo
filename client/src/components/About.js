@@ -17,7 +17,9 @@ const About = () => {
                 <li><b>React</b> frontend</li>
                 <li><b>Express</b> backend node server</li>
                 <li><b>Swipe</b> service for handling credit card payments</li>
-                <li><b>Heroku</b> for hosting application</li>
+                <li><b>Heroku</b> for hosting application and providing automated deployment pipeline</li>
+                <li><b>Jest</b> Javascript testing</li>
+                <li><b>SuperTest</b> Javascript testing backend routes</li>
             </ul>
             <a href="https://github.com/trladd/EmailyUdemyCourseRepo/issues">
                 <div className="col s12 m7">
