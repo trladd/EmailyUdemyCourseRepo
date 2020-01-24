@@ -32,6 +32,15 @@ passport.use(new GoogleStrategy({
         providerUniqueID: profile.id
     })
     if (existingUser) {
+        existingUser.providerUniqueID = profile.id;
+        existingUser.profileImageURL= profile._json.picture;
+        existingUser.emailVerified= profile._json.email_verified;
+        existingUser.email= profile._json.email;
+        existingUser.lastName= profile.name.familyName;
+        existingUser.firstName=profile.name.givenName;
+        existingUser.name=profile.displayName;
+        existingUser.accessToken=profile.accessToken;
+
         return done(null, existingUser);
     }
     const user = await new User(
