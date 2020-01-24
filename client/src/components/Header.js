@@ -129,7 +129,7 @@ class Header extends Component {
                   </li>
                   <br></br>
                   <li>
-                    <button className ="waves-effect btn-flat blue center white-text" href="/auth/linkedin">Login with LinkedIn</button>
+                    <a className ="waves-effect btn-flat blue center white-text" href="/auth/linkedin">Login with LinkedIn</a>
                   </li>
               </ul>
             

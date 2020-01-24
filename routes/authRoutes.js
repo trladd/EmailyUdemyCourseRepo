@@ -37,6 +37,42 @@ module.exports = app => {
         }
     ); //has code query parameter now and so will exchange code for user profile
 
+    /**
+     * @swagger
+     *
+     * /auth/linkedin:
+     *   get:
+     *     description: Login to the application via linkedin
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: passes user on to google for oauth authentication
+     */
+    app.get('/auth/linkedin', passport.authenticate('linkedin', {
+        scope: ['r_emailaddress', 'r_liteprofile']
+    }))
+
+    /**
+     * @swagger
+     *
+     * /auth/linkedin/callback:
+     *   get:
+     *     description: callback for google for oauth authentication
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: 
+     */
+    app.get(
+        '/auth/linkedin/callback', 
+        passport.authenticate('linkedin'),
+        (req, res) => {
+            res.redirect('/surveys');
+        }
+    ); //has code query parameter now and so will exchange code for user profile
+
         /**
      * @swagger
      *
