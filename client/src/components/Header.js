@@ -35,6 +35,19 @@ class Header extends Component {
           M.Modal.init(this.Modal, modalOptions);
     }
 
+    renderAccountImage(){
+      if(this.props.auth.profileImageURL){
+        return(
+          <img src={this.props.auth.profileImageURL} className="circle" style={{height: "40px", width: "40px",position:"relative", top:"12px", right:"5px"}}></img>
+        );
+      }
+      else{
+        return(
+          <i className="material-icons">account_box</i>
+        );
+      }
+    }
+
     renderAuthContent(headerType) {
         switch (this.props.auth){
             case null:
@@ -54,7 +67,7 @@ class Header extends Component {
                     Credits: {this.props.auth.credits}
                 </li>,
                 <li key="3"><a href='/api/logout'>Logout</a></li>,
-                <li key="44"><Link to='/account'><i className="material-icons">account_box</i></Link></li>
+        <li key="44"><Link to='/account'>{this.renderAccountImage()}Account</Link></li>
                 
                 
             ];

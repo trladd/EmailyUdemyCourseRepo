@@ -29,11 +29,23 @@ passport.use(new GoogleStrategy({
     proxy: true
 }, async (accessToken, refreshToken, profile, done) => {
     const existingUser = await User.findOne({
-        googleId: profile.id
+        providerUniqueID: profile.id
     })
     if (existingUser) {
         return done(null, existingUser);
     }
-    const user = await new User({googleId: profile.id}).save();
+    const user = await new User(
+        {
+            providerUniqueID: profile.id,
+            provider: profile.provider,
+            accessToken,
+            name: profile.displayName,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
+            email: profile._json.email,
+            emailVerified: profile._json.email_verified,
+            profileImageURL: profile._json.picture
+        }
+        ).save();
     done(null, user); //this creates the user and saves them to the database
 }));

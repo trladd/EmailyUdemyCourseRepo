@@ -2,6 +2,14 @@ import React from 'react';
 import githublogo from '../images/github.png';
 import swaggerlogo from '../images/swagger.png';
 
+const imageStyle={
+    maxWidth: "200px",
+    maxHeight: "200px",
+    display: "block",
+    width: "auto",
+    height: "auto"
+};
+
 const About = () => {
     return(
         <div className="flow-text">
@@ -25,7 +33,7 @@ const About = () => {
                 <div className="col s12 m7">
                     <div className="card horizontal">
                         <div className="card-image">
-                            <img  className="responsive-image" src={githublogo} alt="githublogo"/>
+                            <img  style={imageStyle} className="responsive-image" src={githublogo} alt="githublogo"/>
                         </div>
                         <div className="card-content">
                             <h2 class="header">Feature Backlog</h2>
@@ -38,7 +46,7 @@ const About = () => {
                 <div className="col s12 m7">
                     <div className="card horizontal">
                         <div className="card-image">
-                            <img className="responsive-image"src={swaggerlogo} alt="swaggerlogo"/>
+                            <img style={imageStyle} className="responsive-image"src={swaggerlogo} alt="swaggerlogo"/>
                         </div>
                         <div className="card-content">
                             <h2 class="header">API Documentation</h2>
