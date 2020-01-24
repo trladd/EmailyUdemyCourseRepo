@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import M from "materialize-css/dist/js/materialize.min.js";
 
+import linkedInSignin from '../images/signin_with_linkedin-buttons/Retina/Sign-In-Small---Default.png';
+
 class Header extends Component {
     
     componentDidMount() {
@@ -129,7 +131,8 @@ class Header extends Component {
                   </li>
                   <br></br>
                   <li>
-                    <a className ="waves-effect btn-flat blue center white-text" href="/auth/linkedin">Login with LinkedIn</a>
+                    <a className ="" href="/auth/linkedin"><img src={linkedInSignin}/></a>
+                    
                   </li>
               </ul>
             
