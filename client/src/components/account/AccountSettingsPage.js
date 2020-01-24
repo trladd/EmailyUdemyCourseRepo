@@ -10,7 +10,7 @@ class Account extends Component{
                 <div>
                     <label>Email</label>
                     <br/>
-                    <span>{this.props.auth.email}</span>
+                    <span>{this.props.auth.email ? this.props.auth.email: "No email on record"}</span>
                 </div>
                 
             );
@@ -20,9 +20,9 @@ class Account extends Component{
     render(){
         return(
             <div>
-                <div className="row">
-                    <img src={this.props.auth ? this.props.auth.profileImageURL : "image"} className="col s2 circle responsive-img"></img>
-                    <h3 className="col s10">{this.props.auth && this.props.auth.name ? this.props.auth.name+"'s ": ""} Account Settings</h3>
+                <div className="row" style={{marginTop:"10px"}}>
+                    <img src={this.props.auth ? this.props.auth.profileImageURL : "image"} className="col s2 m5 circle responsive-img" style={{maxHeight:"130px", maxWidth:"130px"}}></img>
+                    <h3 className="col s10 m7">{this.props.auth && this.props.auth.name ? this.props.auth.name+"'s ": ""} Account Settings</h3>
                 </div>
                 {this.renderAccountInfo()}
                 
