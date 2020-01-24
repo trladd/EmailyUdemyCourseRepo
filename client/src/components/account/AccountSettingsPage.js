@@ -1,17 +1,41 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Payments from '../Payments';
+import { connect } from 'react-redux';
 
+class Account extends Component{
 
-const Account = () =>{
-    return (
-        <div>
-            <h3>Account Settings</h3>
-            <p className="red-text">going to put things like account defaults, adding funds, etc</p>
-            <h5>Add Credits</h5>
-            <Payments/>
-        </div>
-        
-    );
-};
+    renderAccountInfo(){
+        if(this.props.auth){
+            return(
+                <div>
+                    <label>Email</label>
+                    <br/>
+                    <span>{this.props.auth.email}</span>
+                </div>
+                
+            );
+        }
+    }
 
-export default (Account);
+    render(){
+        return(
+            <div>
+                <div className="row">
+                    <img src={this.props.auth ? this.props.auth.profileImageURL : "image"} className="col s2 circle responsive-img"></img>
+                    <h3 className="col s10">{this.props.auth && this.props.auth.name ? this.props.auth.name+"'s ": ""} Account Settings</h3>
+                </div>
+                {this.renderAccountInfo()}
+                
+                <p className="red-text">going to put things like account defaults, adding funds, etc</p>
+                <h5>Add Credits</h5>
+                <Payments/>
+            </div>
+        )
+    }
+}
+
+function mapStateToProps({auth}){
+    return { auth};
+}
+
+export default connect(mapStateToProps)(Account);
