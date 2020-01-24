@@ -1,5 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 
@@ -21,6 +22,45 @@ passport.deserializeUser((id, done) => {
             done(null, user);
         });
 });
+
+passport.use(new LinkedInStrategy({
+    clientID: keys.linkedInClientID,
+    clientSecret: keys.linkedInClientSecret,
+    callbackURL: "/auth/linkedin/callback",
+    scope: ['r_emailaddress', 'r_liteprofile'],
+  }, async (accessToken, refreshToken, profile, done) =>{
+      console.log(profile);
+    const existingUser = await User.findOne({
+        providerUniqueID: profile.id,
+        provider: profile.provider
+    })
+    if (existingUser) {
+        existingUser.providerUniqueID = profile.id;
+        existingUser.profileImageURL= profile.photos[profile.photos.length -1].value;
+        existingUser.emailVerified= true;
+        existingUser.email= profile.emails[0].value,
+        existingUser.lastName= profile.name.familyName;
+        existingUser.firstName=profile.name.givenName;
+        existingUser.name=profile.displayName;
+        existingUser.accessToken=profile.accessToken;
+
+        return done(null, existingUser);
+    }
+    const user = await new User(
+        {
+            providerUniqueID: profile.id,
+            provider: profile.provider,
+            accessToken,
+            name: profile.displayName,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
+            email: profile.emails[0].value,
+            emailVerified: true,
+            profileImageURL: profile.photos[profile.photos.length -1].value
+        }
+        ).save();
+    done(null, user); //this creates the user and saves them to the database
+}));
 
 passport.use(new GoogleStrategy({
     clientID: keys.googleClientID,
