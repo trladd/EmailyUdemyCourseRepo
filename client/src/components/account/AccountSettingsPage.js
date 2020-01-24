@@ -8,7 +8,7 @@ class Account extends Component{
         if(this.props.auth){
             return(
                 <div>
-                    <label>Email</label>
+                    <label>{this.props.auth.emailVerified ? "Verified " : "NON-VERIFIED "}Email</label>
                     <br/>
                     <span>{this.props.auth.email ? this.props.auth.email: "No email on record"}</span>
                 </div>

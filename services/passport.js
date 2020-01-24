@@ -29,7 +29,8 @@ passport.use(new GoogleStrategy({
     proxy: true
 }, async (accessToken, refreshToken, profile, done) => {
     const existingUser = await User.findOne({
-        providerUniqueID: profile.id
+        providerUniqueID: profile.id,
+        provider: profile.provider
     })
     if (existingUser) {
         existingUser.providerUniqueID = profile.id;
