@@ -6,7 +6,10 @@ import * as actions from '../actions';
 import Header from './Header';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
-import SurveyNew from './surveys/SurveyNew';
+import SurveyNewHeader from './surveys/SurveyNewHeader'
+import NewEmailSurvey from './surveys/NewEmailSurvey';
+import NewSurveyOptions from './surveys/NewSurveyOptions';
+import NewDWSurvey from './surveys/directWeb/NewDWSurvey';
 import About from './About';
 import Account from './account/AccountSettingsPage';
 import Thanks from './Thanks';
@@ -25,7 +28,10 @@ class App extends Component {
                             <Header/>
                             <Route exact path="/" component={Landing} />
                             <Route exact path="/surveys" component={Dashboard} />
-                            <Route path="/surveys/new" component={SurveyNew} />
+                            <Route path="/surveys/new" component={SurveyNewHeader} />
+                            <Route exact path="/surveys/new" component={NewSurveyOptions} />
+                            <Route exact path="/surveys/new/email" component={NewEmailSurvey} />
+                            <Route exact path="/surveys/new/emaily" component={NewDWSurvey} />
                             <Route path="/about" component={About} />
                             <Route path="/account" component={Account}/>
                             <Route path="/thanks" component={Thanks}/>

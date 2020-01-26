@@ -4,16 +4,24 @@ import { connect } from 'react-redux';
 
 class Account extends Component{
 
+    constructor(){
+        super();
+        this.state = {
+            numberCredits:5
+        }
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
     renderAccountInfo(){
         if(this.props.auth){
             return(
-                <div>
-                    <div>
+                <div className="row">
+                    <div className="col s4">
                         <label>Signed in with</label>
                         <br/>
                         <span>{this.props.auth.provider}</span>
                     </div>
-                    <div>
+                    <div className="col s4">
                         <label>{this.props.auth.emailVerified ? "Verified " : "NON-VERIFIED "}Email</label>
                         <br/>
                         <span>{this.props.auth.email ? this.props.auth.email: "No email on record"}</span>
@@ -25,6 +33,28 @@ class Account extends Component{
         }
     }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+          [name]: value
+        });
+      }
+
+      showPaymentButton(){
+          if(this.state.numberCredits > 0 && this.state.numberCredits <= 1000){
+              return(
+                    <div className="col s4">
+                        <Payments numberCredits={this.state.numberCredits}/>
+                    </div>
+              );
+          }
+          return(
+              <span className="red-text">Credit amount must be greater than zero and less than 1000</span>
+          );
+      }
+
     render(){
         return(
             <div>
@@ -33,10 +63,25 @@ class Account extends Component{
                     <h3 className="col s10 m7">{this.props.auth && this.props.auth.name ? this.props.auth.name+"'s ": ""} Account Settings</h3>
                 </div>
                 {this.renderAccountInfo()}
+                <hr/>
                 
-                <p className="red-text">going to put things like account defaults, adding funds, etc</p>
-                <h5>Add Credits</h5>
-                <Payments/>
+                <div className="row">
+                
+                    <div className="col s4">
+                        <h5>Add Credits</h5>
+                    </div>
+                    <form className="col s4">
+                        
+                        <div className="row">
+                            <div className="input-field col s6">
+                            <label>Number of Credits to Add</label>
+                            <input name="numberCredits" type="number" 
+                                 onChange={this.handleInputChange} value={this.state.numberCredits}/>
+                            </div>
+                        </div>
+                    </form>
+                    {this.showPaymentButton()}
+                </div>
             </div>
         )
     }

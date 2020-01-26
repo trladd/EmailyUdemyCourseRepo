@@ -3,33 +3,42 @@ import {connect} from 'react-redux';
 import {fetchSurveys} from '../../actions';
 import {Link} from 'react-router-dom';
 import {Pie} from 'react-chartjs-2';
+import M from "materialize-css/dist/js/materialize.min.js";
 
 class SurveyList extends Component{
     componentDidMount(){
         this.props.fetchSurveys();
+        if(this.props.surveys.length === 0){
+            var featureDiscovery = document.querySelector(".tap-target");
+            var tapTarget1 = M.TapTarget.init(featureDiscovery, {
+                onOpen:()=>{},
+                onClose:()=>{}
+            });
+            tapTarget1.open();
+        }
+        
     }
 
     renderSurveys(){
-        console.log(this.props.surveys);
         switch (this.props.surveys.length){
             case null:
                 return;
             case (0):
                 return (
-                <div className="card blue-gray darken-1" key="noSurveys">
+                <div className="card blue-gray darken-1 flow-text" key="noSurveys">
                     <div className="card-content text-white">
                         <span className="card-title">No Surveys Created</span>
-                        <p>You have not created any surveys. When you do, you will see a list of your surveys appear here.</p>
-                        <p>By default, we have granted you two credits to try our app before having to pay. This will allow you to send two surveys!</p>
-                        <Link to="/surveys/new" className="waves-effect waves-light btn blue">
-                        Create One Now
-                        </Link>
                     </div>
+                    <div class="tap-target blue lighten-1" data-target="addMenu">
+                    <div class="tap-target-content white-text">
+                        <h5>Create a Survey!</h5>
+                        <p>You have not created a survey yet. To do so, click here to add a new survey. You can add email based surveys, or direct web link surveys that allow for more flexibility.</p>
+                    </div>
+                </div>
                 </div>);
     
             default:
                     return this.props.surveys.reverse().map(survey => {
-                        console.log("In the map");
                         const pieData = {
                             labels: [
                                 'Yes',

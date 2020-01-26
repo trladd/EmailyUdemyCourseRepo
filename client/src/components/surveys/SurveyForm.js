@@ -10,14 +10,28 @@ import formFields from './formFields';
 class SurveyForm extends Component{
 
     renderFields(){
-        return _.map(formFields, ({label,name}) => {
-            return <Field key={name} component={SurveyField} type="text" label={label} name={name}/>
+        return _.map(formFields, ({label,name, toolTip}) => {
+            return <Field key={name} component={SurveyField} type="text" label={label} name={name} toolTip={toolTip}/>
         })
+    }
+
+    renderInstructions(){
+        return(
+            <div className="flow-text">
+                <h4>New Email Based Survey</h4>
+                <p>This form will help you to create an email based survey. This type of survey works fairly simply. This will create a survey that sends a single email to a list of people.
+                </p>
+            </div>
+        );
     }
 
     render(){
         return(
             <div>
+                <div>
+                    {this.renderInstructions()}
+                </div>
+                <div>
                 <form onSubmit={this.props.handleSubmit(this.props.onSurveySubmit)}>
                     {this.renderFields()}
                     <Link to="/surveys" className="red btn-flat left white-text">
@@ -30,6 +44,8 @@ class SurveyForm extends Component{
                 </form>
                 
             </div>
+            </div>
+            
         );
     }
 }
