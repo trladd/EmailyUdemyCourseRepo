@@ -31,7 +31,7 @@ class Dashboard extends Component {
         return (
             <div>
                 <SurveyList/>
-                <div className="fixed-action-btn">
+                <div className="fixed-action-btn flow-text">
                     <a id="addMenu" className="btn-floating btn-large blue">
                         <i className="material-icons">add</i>
                     </a>
