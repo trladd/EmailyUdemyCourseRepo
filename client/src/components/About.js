@@ -2,17 +2,10 @@ import React from 'react';
 import githublogo from '../images/github.png';
 import swaggerlogo from '../images/swagger.png';
 
-const imageStyle={
-    maxWidth: "200px",
-    maxHeight: "200px",
-    display: "block",
-    width: "auto",
-    height: "auto"
-};
-
 const About = () => {
     return(
-        <div className="flow-text">
+        <div>
+            <div className="flow-text">
             <h3>About this App</h3>
             <p>This app was first created for use with a <a href="https://www.udemy.com/course/node-with-react-fullstack-web-development/">udemy course</a> that I started where I wanted to learn node.js development along with React. After completing the course, I chose to continue practicing these skills by building on to this web appliation. Since completing the course, I have built out an Github issues list where I am slowly adding more features.</p>
             <h4>What is Emaily?</h4>
@@ -29,27 +22,28 @@ const About = () => {
                 <li><b>Jest</b> Javascript testing</li>
                 <li><b>SuperTest</b> Javascript testing backend routes</li>
             </ul>
+            </div>
             <a href="https://github.com/trladd/EmailyUdemyCourseRepo/issues">
-                <div className="col s12 m7">
+                <div className="row">
                     <div className="card horizontal">
-                        <div className="card-image">
-                            <img  style={imageStyle} className="responsive-image" src={githublogo} alt="githublogo"/>
+                        <div className="card-image col s3">
+                            <img  className="responsive-image" src={githublogo} alt="githublogo"/>
                         </div>
-                        <div className="card-content">
-                            <h2 class="header">Feature Backlog</h2>
+                        <div className="card-content col s9">
+                            <h5 class="header">Feature Backlog</h5>
                             <p>Click here to see my github issues list of upcoming features and view the source code</p>
                         </div>
                     </div>
                 </div>
             </a>
             <a href="/swagger">
-                <div className="col s12 m7">
+                <div className="row">
                     <div className="card horizontal">
-                        <div className="card-image">
-                            <img style={imageStyle} className="responsive-image"src={swaggerlogo} alt="swaggerlogo"/>
+                        <div className="card-image col s3">
+                            <img className="responsive-image"src={swaggerlogo} alt="swaggerlogo"/>
                         </div>
-                        <div className="card-content">
-                            <h2 class="header">API Documentation</h2>
+                        <div className="card-content col s9">
+                            <h5 class="header">API Documentation</h5>
                             <p>Click here to view swagger docs for this site's backend</p>
                         </div>
                     </div>
