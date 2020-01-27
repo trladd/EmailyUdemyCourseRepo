@@ -16,12 +16,12 @@ class Account extends Component{
         if(this.props.auth){
             return(
                 <div className="row">
-                    <div className="col s4">
+                    <div className="col s12 m6">
                         <label>Signed in with</label>
                         <br/>
                         <span>{this.props.auth.provider}</span>
                     </div>
-                    <div className="col s4">
+                    <div className="col s12 m6">
                         <label>{this.props.auth.emailVerified ? "Verified " : "NON-VERIFIED "}Email</label>
                         <br/>
                         <span>{this.props.auth.email ? this.props.auth.email: "No email on record"}</span>
@@ -45,7 +45,7 @@ class Account extends Component{
       showPaymentButton(){
           if(this.state.numberCredits > 0 && this.state.numberCredits <= 1000){
               return(
-                    <div className="col s4">
+                    <div className="col s6">
                         <Payments numberCredits={this.state.numberCredits}/>
                     </div>
               );
@@ -59,25 +59,22 @@ class Account extends Component{
         return(
             <div>
                 <div className="row" style={{marginTop:"10px"}}>
-                    <img src={this.props.auth ? this.props.auth.profileImageURL : "image"} className="col s2 m5 circle responsive-img" style={{maxHeight:"130px", maxWidth:"130px"}}></img>
-                    <h3 className="col s10 m7">{this.props.auth && this.props.auth.name ? this.props.auth.name+"'s ": ""} Account Settings</h3>
+                    <img src={this.props.auth ? this.props.auth.profileImageURL : "image"} className="col s5 m4 circle responsive-img" style={{maxHeight:"130px", maxWidth:"130px"}}></img>
+                    <h3 className="flow-text col s7 m8">{this.props.auth && this.props.auth.name ? this.props.auth.name+"'s ": ""} Account Settings</h3>
                 </div>
                 {this.renderAccountInfo()}
                 <hr/>
                 
                 <div className="row">
                 
-                    <div className="col s4">
+                    <div className="col s12">
                         <h5>Add Credits</h5>
                     </div>
-                    <form className="col s4">
-                        
-                        <div className="row">
-                            <div className="input-field col s6">
-                            <label>Number of Credits to Add</label>
-                            <input name="numberCredits" type="number" 
-                                 onChange={this.handleInputChange} value={this.state.numberCredits}/>
-                            </div>
+                    <form className="col s6 row">
+                        <div className="col s12">
+                        <label>Number of Credits to Add</label>
+                        <input name="numberCredits" type="number" 
+                                onChange={this.handleInputChange} value={this.state.numberCredits}/>
                         </div>
                     </form>
                     {this.showPaymentButton()}

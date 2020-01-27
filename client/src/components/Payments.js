@@ -26,7 +26,7 @@ class Payments extends Component{
              stripeKey={process.env.REACT_APP_STRIPE_KEY}
             >
                 <button className="btn blue">
-                    Add {this.props.numberCredits} in Credits
+                    Add {this.props.numberCredits} Credits
                 </button>
             </StripeCheckout>
         );

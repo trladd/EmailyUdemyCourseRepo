@@ -30,7 +30,7 @@ class SurveyList extends Component{
                         <span className="card-title">No Surveys Created</span>
                     </div>
                     <div class="tap-target blue lighten-1" data-target="addMenu">
-                    <div class="tap-target-content white-text">
+                    <div class="tap-target-content white-text col l5 xl5 m3" style={{textAlign:"right"}}>
                         <h5>Create a Survey!</h5>
                         <p>You have not created a survey yet. To do so, click here to add a new survey. You can add email based surveys, or direct web link surveys that allow for more flexibility.</p>
                     </div>
