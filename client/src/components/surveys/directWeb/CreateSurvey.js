@@ -3,6 +3,7 @@ import queryString from 'query-string'
 import axios from 'axios';
 import JSONInput from 'react-json-editor-ajrm';
 import locale    from 'react-json-editor-ajrm/locale/en';
+import Survey from './Survey';
 
     
 
@@ -11,10 +12,12 @@ class CreateSurvey extends Component{
         super();
         this.state={
             survey: null,
-            showJSON: false
+            showJSON: true,
+            showPreview: true
         };
         this.updateStateFromEditor = this.updateStateFromEditor.bind(this);
         this.toggleEditor = this.toggleEditor.bind(this);
+        this.togglePreview = this.togglePreview.bind(this);
     }
 
     async componentDidMount(){
@@ -47,6 +50,15 @@ class CreateSurvey extends Component{
         }
     }
 
+    togglePreview(){
+        if(this.state.showPreview){
+            this.setState({showPreview: false});
+        }
+        else{
+            this.setState({showPreview: true});
+        }
+    }
+
     renderJSONEditor(){
         if(this.state.showJSON){
             return(
@@ -54,7 +66,7 @@ class CreateSurvey extends Component{
                     id          = 'a_unique_id'
                     placeholder = { this.state.survey }
                     locale      = { locale }
-                    height      = '90%'
+                    height      = '100%'
                     width       = '100%'
                     onChange = {this.updateStateFromEditor}
 
@@ -62,6 +74,20 @@ class CreateSurvey extends Component{
             );
         }
     }
+
+    renderPreview(){
+        if(this.state.showPreview){
+            return(
+                <div className="z-depth-5">
+                    <div className="container">
+                        <Survey surveyData={this.state.survey} disabled={true}/>
+                    </div>
+                </div>
+            );
+        }
+    }
+
+
 
     render(){
     return(
@@ -71,10 +97,19 @@ class CreateSurvey extends Component{
                 <span>{this.state.survey && this.state.survey.name ? this.state.survey.name : "N/A"}</span>
             </div>
             <div>
-                <div>
-                    <button className="waves-effect waves-light btn blue" onClick={this.toggleEditor}>Toggle JSON Editor</button>
+                <div className="row">
+                    <button className="waves-effect waves-light btn blue col m6" onClick={this.toggleEditor}>Toggle JSON Editor</button>
+                    <button className="waves-effect waves-light btn blue col m6" onClick={this.togglePreview}>Toggle Survey Preview</button>
                 </div>
-                {this.renderJSONEditor()}
+                <div className="row">
+                    <div className="col m6">
+                        {this.renderJSONEditor()}
+                    </div>
+                    <div className="col m6">
+                        {this.renderPreview()}
+                    </div>
+                </div>
+                
                 
             </div>
         </div>

@@ -11,19 +11,20 @@ const exampleSurveyField = {
 };
 class SurveyField extends Component{
     constructor(props){
-        
+        super();
     }
 
     renderInput(){
+        const q = this.props.field;
         return(
-            <div className="row">
-                <div className="col m9">
-                    <span>this.props.field.</span>
+            <div className="row flow-text">
+                <div className="col m12 l6">
+                    <span>{q.questionText}</span>
                 </div>
-                <div className="col m3">
-                    <input {...input} style={{marginBottom:'5px'}} className="tooltipped"  data-tooltip={toolTip}/>
-                    <div className="red-text" style={{marginBottom: '20px'}}>
-                        {touched && error}
+                <div className="col m12 l6">
+                    <div class="input-field">
+                        <input placeholder={q.placeholderText? q.placeholderText:""} id={q._id} type="text" class="validate"/>
+                        <label for={q._id}>{q.label}</label>
                     </div>
                 </div>
             </div>
@@ -41,6 +42,3 @@ class SurveyField extends Component{
 };
 
 export default SurveyField;
-export default({input, label, toolTip, meta:{error, touched}}) => {
-    
-};
