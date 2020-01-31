@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FETCH_USER, FETCH_SURVEYS} from './types';
+import {FETCH_USER, FETCH_SURVEYS, FETCH_GLOBAL_TEMPLATES} from './types';
 
 /**
  * Using redux thunk this is an action creator
@@ -14,7 +14,7 @@ export const fetchUser = () => {
 
 };*/
 export const fetchUser = () => async dispatch => {
-    const res = await axios.get('api/current_user');
+    const res = await axios.get('/api/current_user');
     dispatch({type: FETCH_USER, payload: res.data});
 };
 
@@ -32,4 +32,11 @@ export const submitSurvey = (values, history) => async dispatch => {
 export const fetchSurveys = () => async dispatch => {
     const res = await axios.get('/api/surveys');
     dispatch({type: FETCH_SURVEYS, payload: res.data});
+};
+
+export const fetchGlobalSurveyTemplates = () => async dispatch => {
+    console.log("running fetch now");
+    const res = await axios.get('/api/surveys/templates/global');
+    console.log(res);
+    dispatch({type: FETCH_GLOBAL_TEMPLATES, payload: res.data});
 };

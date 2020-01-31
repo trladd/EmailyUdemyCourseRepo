@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 
 const cardStyle={
     marginRight: "3px",
-    marginLeft: "3px"
+    marginLeft: "3px",
+    height: "200px"
 };
 
 class NewDWSurvey extends Component{

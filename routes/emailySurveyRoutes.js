@@ -27,7 +27,9 @@ module.exports = async app => {
      */
     app.get('/api/surveys/templates/global', requireLogin, async (req, res) => {
         const templates = await SurveyTemplate.find({owner: "global"})
-            .select();
+            .select({questions: false,
+                    defaultIntroText: false,
+                    owner: false});
         res.send(templates);
     });
 
