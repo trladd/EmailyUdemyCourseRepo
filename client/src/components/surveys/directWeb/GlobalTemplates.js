@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {fetchGlobalSurveyTemplates} from '../../../actions';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 
 const cardStyle={
     marginRight: "3px",
@@ -26,13 +27,19 @@ class GlobalTemplates extends Component{
     
             default:
                     return this.props.globalTemplates.reverse().map(template => {
+                        var thisReference = {pathname: "/surveys/new/emaily/create",
+                                            search: "?template=" + template._id};
                         return(
                             <div className="col s12 m6 l4 xl4">
                                 <div className="card z-depth-4" style={cardStyle}>
+                                    <Link
+                                        to={thisReference}
+                                    >
                                         <div className="card-content">
                                             <span className="card-title">{template.name}</span>
                                             <p><b>Description: </b>{template.description}</p>
                                         </div>
+                                    </Link>
                                 </div>
                             </div>
                         );

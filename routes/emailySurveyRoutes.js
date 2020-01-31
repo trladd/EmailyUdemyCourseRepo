@@ -70,4 +70,27 @@ module.exports = async app => {
         
     });
 
+    /**
+     * @swagger
+     *
+     * /api/surveys/template/{templateID}:
+     *   get:
+     *     description: gets a list of global survey templates
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *          - in: path
+     *            name: templateID
+     *     responses:
+     *       200:
+     *         description: object of the surveys
+     *       401:
+     *          description: user must first be logged in
+     *          
+     */
+    app.get('/api/surveys/template/:id', requireLogin, async (req, res) => {
+        const template = await SurveyTemplate.findById(req.params.id);
+        res.send(template);
+    });
+
 };
