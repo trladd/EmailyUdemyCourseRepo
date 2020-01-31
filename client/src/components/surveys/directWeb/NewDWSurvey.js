@@ -12,7 +12,7 @@ class NewDWSurvey extends Component{
             <div className="row">
                 <div className="col s12 m6 l4 xl4">
                     <div className="card z-depth-4" style={cardStyle}>
-                        <Link>
+                        <Link to="/surveys/new/emaily/templates/global">
                             <div className="card-content">
                                 <span className="card-title">Create From Global Templates</span>
                                 <p>Create a new survey using globally available templates</p>

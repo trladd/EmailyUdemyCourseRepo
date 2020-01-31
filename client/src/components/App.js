@@ -32,6 +32,7 @@ class App extends Component {
                             <Route exact path="/surveys/new" component={NewSurveyOptions} />
                             <Route exact path="/surveys/new/email" component={NewEmailSurvey} />
                             <Route exact path="/surveys/new/emaily" component={NewDWSurvey} />
+                            <Route exact path="/surveys/new/emaily/templates/global" component={NewDWSurvey} />
                             <Route path="/about" component={About} />
                             <Route path="/account" component={Account}/>
                             <Route path="/thanks" component={Thanks}/>
