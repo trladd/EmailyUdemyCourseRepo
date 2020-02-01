@@ -6,14 +6,14 @@ import M from "materialize-css/dist/js/materialize.min.js";
 class CreateSurveyField extends Component{
     constructor(){
         super();
-        console.log(this.props);
+        this.handleQuestionChange = this.handleQuestionChange.bind(this);
     }
 
     componentDidMount(){
         var dropdowns = document.querySelectorAll("select");
         var dropdown = M.FormSelect.init(dropdowns, {
         });
-        this.handleInputChange = this.handleInputChange.bind(this);
+        
     }
 
     renderTypes(){
@@ -22,7 +22,7 @@ class CreateSurveyField extends Component{
         })
     }
 
-    handleInputChange(event) {
+    handleQuestionChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
@@ -35,7 +35,7 @@ class CreateSurveyField extends Component{
         return(
             <div className="row">
                 <div className="input-field col s12">
-                    <select name="questionType" onChange={this.handleInputChange} >
+                    <select name="questionType" onChange={this.handleQuestionChange} >
                         <option value="none" disabled defaultValue>Choose question type</option>
                         {this.renderTypes()}
                     </select>

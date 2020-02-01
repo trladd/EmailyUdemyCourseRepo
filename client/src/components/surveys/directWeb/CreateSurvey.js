@@ -23,6 +23,7 @@ class CreateSurvey extends Component{
         this.togglePreview = this.togglePreview.bind(this);
         this.updateQuestion = this.updateQuestion.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.addQuestion = this.addQuestion.bind(this);
     }
 
     async componentDidMount(){
@@ -81,16 +82,20 @@ class CreateSurvey extends Component{
      * @param {*} questionObject 
      */
     updateQuestion(questionObject){
-        console.log(questionObject);
         const indexToUpdate = _.findIndex(this.state.survey.questions, {_id:questionObject._id});
         const tempObject = this.state.survey;
         tempObject.questions[indexToUpdate] = questionObject;
         this.setState({survey:tempObject});
-        console.log(this.state);
     }
 
     renderCommonFields(){
 
+    }
+
+    addQuestion(){
+        const survey = this.state.survey;
+        survey.questions.push({});
+        this.setState({survey});
     }
 
     renderQuestionFields(){
@@ -98,7 +103,6 @@ class CreateSurvey extends Component{
             return(<div>No questions added yet</div>);
         }
         return this.state.survey.questions.map(questionItem => {
-            console.log(questionItem);
             return(
                 <li key={questionItem._id}>
                     <CreateSurveyField question={questionItem} updateSurvey={this.updateQuestion}/>
@@ -118,6 +122,9 @@ class CreateSurvey extends Component{
                     <ul>
                         {this.renderQuestionFields()}
                     </ul>
+                    <button className="waves-effect waves-light btn blue" onClick={this.addQuestion}>
+                        Add Question
+                    </button>
                 </div>
             </div>
         );
