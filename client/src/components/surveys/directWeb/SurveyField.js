@@ -22,9 +22,9 @@ class SurveyField extends Component{
                     <span>{q.questionText}</span>
                 </div>
                 <div className="col m12 l6">
-                    <div class="input-field">
-                        <input placeholder={q.placeholderText? q.placeholderText:""} id={q._id} type="text" class="validate"/>
-                        <label for={q._id}>{q.label}</label>
+                    <div className="input-field">
+                        <input placeholder={q.placeholderText? q.placeholderText:""} id={q._id} type="text" className="validate"/>
+                        <label htmlFor={q._id}>{q.label}</label>
                     </div>
                 </div>
             </div>
@@ -35,6 +35,9 @@ class SurveyField extends Component{
         switch(this.props.field.questionType){
             case "input":{
                 return this.renderInput();
+            }
+            default:{
+                return(<span>Unknown Question Type</span>);
             }
         }
         

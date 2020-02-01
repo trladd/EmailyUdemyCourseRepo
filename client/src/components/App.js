@@ -23,7 +23,7 @@ class App extends Component {
 
     render(){
         return (
-            <div className="grey lighten-4">
+            <div>
                 <div className= "container">
                     <BrowserRouter>
                         <div>
