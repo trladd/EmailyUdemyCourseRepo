@@ -7,6 +7,7 @@ import Survey from './Survey';
 import CreateSurveyField from './CreateSurveyField';
 import _ from 'lodash';
 import M from "materialize-css/dist/js/materialize.min.js";
+import defaultQuestion from './defaultQuestion';
 
     
 
@@ -24,6 +25,9 @@ class CreateSurvey extends Component{
         this.updateQuestion = this.updateQuestion.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.addQuestion = this.addQuestion.bind(this);
+        this.renderQuestionFields = this.renderQuestionFields.bind(this);
+        this.renderCommonFields = this.renderCommonFields.bind(this);
+        this.removeQuestion = this.removeQuestion.bind(this);
     }
 
     async componentDidMount(){
@@ -88,24 +92,49 @@ class CreateSurvey extends Component{
         this.setState({survey:tempObject});
     }
 
-    renderCommonFields(){
-
+    async removeQuestion(questionID){
+        const tempObject = this.state.survey;
+        tempObject.questions = _.remove(tempObject.questions, (item) => {
+            return item._id != questionID;
+          });
+        await this.setState({survey:tempObject});
     }
 
-    addQuestion(){
+    renderCommonFields(){
+        return(
+            <div>
+                <div className="input-field col s12 l6">
+                    <input onChange={this.handleInputChange} value={this.state.survey?this.state.survey.name:""} id="surveyName" name="name" type="text" className="validate"/>
+                    <label className="active"  htmlFor="surveyName">Survey Name</label>
+                </div>
+                <div className="input-field col s12">
+                    <textarea onChange={this.handleInputChange} value={this.state.survey?this.state.survey.description:""} id="surveyDesciption" name="description" type="text" className="materialize-textarea"/>
+                    <label className="active"  htmlFor="surveyDesciption">Description</label>
+                </div>
+                <div className="input-field col s12">
+                    <textarea onChange={this.handleInputChange} value={this.state.survey?this.state.survey.defaultIntroText:""} id="defaultIntroText" name="defaultIntroText" type="text" className="materialize-textarea"/>
+                    <label className="active"  htmlFor="defaultIntroText">Intro Text</label>
+                </div>
+            </div>
+        );
+    }
+
+    async addQuestion(){
         const survey = this.state.survey;
-        survey.questions.push({});
-        this.setState({survey});
+        survey.questions.push(_.clone(defaultQuestion));
+        survey.questions[survey.questions.length-1]._id = this.state.survey.questions.length;
+        await this.setState({survey});
     }
 
     renderQuestionFields(){
         if(!this.state.survey || !this.state.survey.questions || this.state.survey.questions.length === 0){
-            return(<div>No questions added yet</div>);
+            return(<li className="redText">No questions added yet</li>);
         }
         return this.state.survey.questions.map(questionItem => {
             return(
-                <li key={questionItem._id}>
-                    <CreateSurveyField question={questionItem} updateSurvey={this.updateQuestion}/>
+                <li className="collection-item" key={questionItem._id}>
+                    <h5>Question {_.findIndex(this.state.survey.questions, {_id:questionItem._id})+1}</h5>
+                    <CreateSurveyField question={questionItem} updateSurvey={this.updateQuestion} removeItem={this.removeQuestion}/>
                 </li>
             );
         });
@@ -115,11 +144,11 @@ class CreateSurvey extends Component{
     renderGUIEditor(){
         return(
             <div>
-                <div>
+                <div className="row">
                     {this.renderCommonFields()}
                 </div>
-                <div>
-                    <ul>
+                <div className="row">
+                    <ul className="collection">
                         {this.renderQuestionFields()}
                     </ul>
                     <button className="waves-effect waves-light btn blue" onClick={this.addQuestion}>
