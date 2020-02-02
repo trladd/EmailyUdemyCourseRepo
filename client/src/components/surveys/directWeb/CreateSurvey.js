@@ -121,6 +121,10 @@ class CreateSurvey extends Component{
 
     async addQuestion(){
         const survey = this.state.survey;
+        if(!survey.questions){
+            survey.questions=[];
+        }
+        
         survey.questions.push(_.clone(defaultQuestion));
         survey.questions[survey.questions.length-1]._id = this.state.survey.questions.length;
         await this.setState({survey});
