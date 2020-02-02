@@ -33,7 +33,7 @@ class NewDWSurvey extends Component{
                 </div>
                 <div className="col s12 m6 l4 xl4">
                     <div className="card z-depth-4" style={cardStyle}>
-                        <Link>
+                        <Link to="/surveys/new/emaily/create">
                             <div className="card-content">
                                 <span className="card-title">Create New Survey Template</span>
                                 <p>Create new survey template</p>
