@@ -1,0 +1,24 @@
+{
+    "name": "Emaily Survey",
+    "description": "Gather thoughts on emaily app",
+    "defaultIntroText": "Please answer the following questions in order to improve emaily",
+    "questions":[
+        {
+            "questionText": "What app is this?",
+            "questionType": "input",
+            "booleanTrueVal": "String",
+            "booleanFalseVal": "String",
+            "placeholderText": "Enter emaily",
+            "toolTip": "Just enter emaily",
+            "required": true
+        },
+        {
+            "questionText": "What is your name?",
+            "questionType": "input",
+            "booleanTrueVal": "String",
+            "booleanFalseVal": "String",
+            "placeholderText": "Enter your name",
+            "required": true
+        }
+    ]
+}

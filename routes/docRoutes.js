@@ -17,7 +17,7 @@ const swaggerJSDocOptions={
         },
       },
       // Path to the API docs
-      apis: ['./routes/authRoutes.js', './routes/billingRoutes.js', './routes/surveyRoutes.js'],
+      apis: ['./routes/authRoutes.js', './routes/billingRoutes.js', './routes/surveyRoutes.js','./routes/emailySurveyRoutes.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerJSDocOptions);
