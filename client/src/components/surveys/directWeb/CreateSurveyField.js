@@ -111,14 +111,10 @@ class CreateSurveyField extends Component{
                         <span>Show Advanced Settings</span>
                     </label>
                     {this.renderAdvanced()}
-                    
                 </div>
                 <div className="row">
                 <button className="waves-effect waves-light btn red right" onClick={this.removeThis}>Remove</button>
                 </div>
-                
-                    
-                
             </form>
         );
     }

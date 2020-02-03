@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import queryString from 'query-string'
+import queryString from 'query-string';
 import axios from 'axios';
 import JSONInput from 'react-json-editor-ajrm';
 import locale    from 'react-json-editor-ajrm/locale/en';
@@ -46,6 +46,10 @@ class CreateSurvey extends Component{
     }
 
     async updateStateFromEditor(newObject){
+        console.log(newObject);
+        if(!newObject.jsObject || newObject.jsObject==="" || newObject.jsObject === undefined){
+            newObject.jsObject={};
+        }
         await this.setState({survey: newObject.jsObject});
     }
 
@@ -95,14 +99,14 @@ class CreateSurvey extends Component{
     async removeQuestion(questionID){
         const tempObject = this.state.survey;
         tempObject.questions = _.remove(tempObject.questions, (item) => {
-            return item._id != questionID;
+            return item._id !== questionID;
           });
         await this.setState({survey:tempObject});
     }
 
     renderCommonFields(){
         return(
-            <div>
+            <form>
                 <div className="input-field col s12 l6">
                     <input onChange={this.handleInputChange} value={this.state.survey?this.state.survey.name:""} id="surveyName" name="name" type="text" className="validate"/>
                     <label className="active"  htmlFor="surveyName">Survey Name</label>
@@ -115,7 +119,7 @@ class CreateSurvey extends Component{
                     <textarea onChange={this.handleInputChange} value={this.state.survey?this.state.survey.defaultIntroText:""} id="defaultIntroText" name="defaultIntroText" type="text" className="materialize-textarea"/>
                     <label className="active"  htmlFor="defaultIntroText">Intro Text</label>
                 </div>
-            </div>
+            </form>
         );
     }
 

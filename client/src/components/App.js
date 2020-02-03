@@ -10,7 +10,7 @@ import SurveyNewHeader from './surveys/SurveyNewHeader'
 import NewEmailSurvey from './surveys/NewEmailSurvey';
 import NewSurveyOptions from './surveys/NewSurveyOptions';
 import NewDWSurvey from './surveys/directWeb/NewDWSurvey';
-import GlobalTemplates from './surveys/directWeb/GlobalTemplates';
+import Templates from './surveys/directWeb/Templates';
 import CreateSurvey from './surveys/directWeb/CreateSurvey';
 import About from './About';
 import Account from './account/AccountSettingsPage';
@@ -34,7 +34,7 @@ class App extends Component {
                             <Route exact path="/surveys/new" component={NewSurveyOptions} />
                             <Route exact path="/surveys/new/email" component={NewEmailSurvey} />
                             <Route exact path="/surveys/new/emaily" component={NewDWSurvey} />
-                            <Route exact path="/surveys/new/emaily/templates/global" component={GlobalTemplates} />
+                            <Route exact path="/surveys/new/emaily/templates" component={Templates} />
                             <Route path="/surveys/new/emaily/create" component={CreateSurvey} />
                             <Route path="/about" component={About} />
                             <Route path="/account" component={Account}/>
