@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import queryString from 'query-string';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 import JSONInput from 'react-json-editor-ajrm';
 import locale    from 'react-json-editor-ajrm/locale/en';
@@ -8,7 +9,8 @@ import CreateSurveyField from './CreateSurveyField';
 import _ from 'lodash';
 import M from "materialize-css/dist/js/materialize.min.js";
 import defaultQuestion from './defaultQuestion';
-
+import * as actions from '../../../actions';
+import {connect} from 'react-redux';
     
 
 class CreateSurvey extends Component{
@@ -28,6 +30,8 @@ class CreateSurvey extends Component{
         this.renderQuestionFields = this.renderQuestionFields.bind(this);
         this.renderCommonFields = this.renderCommonFields.bind(this);
         this.removeQuestion = this.removeQuestion.bind(this);
+        this.saveToMyTemplates = this.saveToMyTemplates.bind(this);
+        this.saveToGlobalTemplates = this.saveToGlobalTemplates.bind(this);
     }
 
     async componentDidMount(){
@@ -208,6 +212,25 @@ class CreateSurvey extends Component{
         this.setState({survey:temp});
       }
 
+
+    saveToMyTemplates(){
+        this.props.submitSurveyTemplates(this.state.survey,this.props.history);
+    }
+
+    saveToGlobalTemplates(){
+        this.props.submitGlobalTemplate(this.state.survey,this.props.history);
+    }
+
+    renderAdminControls(){
+        if(this.props.auth && this.props.auth.isAdmin){
+            return(
+                <div>
+                    <button className="waves-effect waves-light btn amber darken-3 right" onClick={this.saveToGlobalTemplates}>Save as global template</button>
+                </div>
+            );
+        }
+    }
+      
     render(){
     return(
         <div>
@@ -231,9 +254,23 @@ class CreateSurvey extends Component{
                 
                 
             </div>
+            <div className="row">
+                <button className="waves-effect waves-light btn light-green right" onClick={this.saveToMyTemplates} style={{marginRight:10}}>Save To My Templates</button>
+                <Link>
+                    <button className="waves-effect waves-light btn light-green right">Continue to Send Survey</button>
+                </Link>
+                
+            </div>
+            <div className="row">
+                {this.renderAdminControls()}
+            </div>
         </div>
     );
     }
 }
 
-export default (CreateSurvey);
+function mapStateToProps({globalTemplates, userTemplates, auth}){
+    return {globalTemplates, userTemplates, auth}
+}
+
+export default connect(mapStateToProps, actions)(CreateSurvey);

@@ -43,3 +43,16 @@ export const fetchUserSurveyTemplates = () => async dispatch => {
     const res = await axios.get('/api/surveys/templates/user');
     dispatch({type: FETCH_USER_TEMPLATES, payload: res.data});
 };
+
+export const submitSurveyTemplates = (surveyObj, history) => async dispatch => {
+    const res = await axios.post('/api/surveys/templates/user', surveyObj);
+    history.push('/surveys/new/emaily/templates?templates=user');
+    dispatch({type: FETCH_USER_TEMPLATES, payload: res.data});
+};
+
+export const submitGlobalTemplate = (surveyObj, history) => async dispatch => {
+    const res = await axios.post('/api/surveys/templates/global', surveyObj);
+    history.push('/surveys/new/emaily/templates?templates=global');
+    dispatch({type: FETCH_GLOBAL_TEMPLATES, payload: res.data});
+};
+

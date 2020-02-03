@@ -14,7 +14,7 @@ const cardStyle={
 class Templates extends Component{
     constructor(){
         super();
-        
+        this.toggleType = this.toggleType.bind(this);
     }
 
     async componentDidMount(){
@@ -73,9 +73,30 @@ class Templates extends Component{
         
     }
 
+    async toggleType(){
+        if(this.state.templateType==="User"){
+            await this.props.fetchGlobalSurveyTemplates();
+            await this.setState({templates:this.props.globalTemplates, templateType:"Global"});
+            console.log("global");
+        }
+        else{
+            await this.props.fetchUserSurveyTemplates();
+            await this.setState({templates:this.props.userTemplates, templateType:"User"});
+            console.log('user');
+        }
+    }
+
     render(){
         return(
             <div>
+                <div class="switch">
+                <label>
+                Global
+                <input onChange={this.toggleType} type="checkbox" />
+                <span class="lever"></span>
+                Saved User Templates
+                </label>
+            </div>
                 <h4>{this.state?this.state.templateType:""} Templates</h4>
                 <div className="row">
                     {this.renderTemplates()}

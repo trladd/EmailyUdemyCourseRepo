@@ -87,6 +87,7 @@ module.exports = async app => {
                 survey
             });
         } catch (err){
+            console.log(error);
             res.status(422).send(err);
             
         }
@@ -112,6 +113,7 @@ module.exports = async app => {
      *                  description: user does not have enough credits
      */
     app.post('/api/surveys/templates/user', async (req, res) => {
+        console.log(req.body);
         const survey = new SurveyTemplate(req.body);
         survey.owner = req.user.id;
         survey.addedDate = Date.now();
@@ -122,6 +124,7 @@ module.exports = async app => {
                 survey
             });
         } catch (err){
+            console.log(err);
             res.status(422).send(err);
             
         }
