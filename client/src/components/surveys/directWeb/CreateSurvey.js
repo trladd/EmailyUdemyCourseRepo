@@ -21,7 +21,8 @@ class CreateSurvey extends Component{
             showJSON: false,
             showPreview: true,
             currentTemplateExistsUser: null,
-            currentTemplateExistsGlobal: null
+            currentTemplateExistsGlobal: null,
+            initializing: false
         };
         this.updateStateFromEditor = this.updateStateFromEditor.bind(this);
         this.toggleJSONEditor = this.toggleJSONEditor.bind(this);
@@ -37,6 +38,7 @@ class CreateSurvey extends Component{
         this.loadModalState = this.loadModalState.bind(this);
         this.clearModalState = this.clearModalState.bind(this);
         this.renderAdminControls = this.renderAdminControls.bind(this);
+        this.initModal = this.initModal.bind(this);
     }
 
     async componentDidMount(){
@@ -51,6 +53,12 @@ class CreateSurvey extends Component{
         else{
             this.setState({survey: {message: "empty survey"}});
         }
+        this.initModal();
+          //this.setState({initializing: false});
+        
+    }
+
+    initModal(){
         const modalOptions = {
             onOpenStart: this.loadModalState
             ,
@@ -68,7 +76,6 @@ class CreateSurvey extends Component{
             endingTop: "10%"
           };
           M.Modal.init(this.Modal, modalOptions);
-        
     }
 
     async loadModalState(){
@@ -269,8 +276,8 @@ class CreateSurvey extends Component{
                 return(
                     <div className="row">
                         <h5>This survey template already exists in global templates</h5>
-                        <button className="waves-effect waves-light btn amber darken-3" onClick={this.saveToGlobalTemplates}>Overwrite Existing Global Template</button>
-                        <button className="waves-effect waves-light btn amber darken-3" onClick={this.saveToGlobalTemplates}>Save as a New Global Template</button>
+                        <button className="waves-effect waves-light btn amber darken-3 row" onClick={this.saveToGlobalTemplates}>Overwrite Existing Global Template</button>
+                        <button className="waves-effect waves-light btn amber darken-3 row" onClick={this.saveToGlobalTemplates}>Save as a New Global Template</button>
                     </div>
                 );
             }
@@ -279,7 +286,7 @@ class CreateSurvey extends Component{
                 return(
                     <div className="row">
                         <h5>This survey does not yet exist in global templates</h5>
-                        <button className="waves-effect waves-light btn amber darken-3" onClick={this.saveToGlobalTemplates}>Save as a NewGlobal Template</button>
+                        <button className="waves-effect waves-light btn amber darken-3 row" onClick={this.saveToGlobalTemplates}>Save as a NewGlobal Template</button>
                     </div>
                 );
             }
@@ -295,8 +302,12 @@ class CreateSurvey extends Component{
                     <div>
                         <div className="row">
                             <h5>This survey template already exists in your templates</h5>
-                            <button className="waves-effect waves-light btn blue">Overwrite Existing Template</button>
-                            <button className="waves-effect waves-light btn blue">Save as New Template</button>
+                            <div className="row">
+                                <button className="waves-effect waves-light btn blue">Overwrite Existing Template</button>
+                            </div>
+                            <div className="row">
+                                <button className="waves-effect waves-light btn blue row">Save as New Template</button>
+                            </div>
                         </div>
                         {this.renderAdminControls()}
                     </div>
@@ -309,7 +320,7 @@ class CreateSurvey extends Component{
                     <div>
                         <div className="row">
                             <h5>This survey does not yet exist in your templates</h5>
-                            <button className="waves-effect waves-light btn blue">Save as New Template</button>
+                            <button className="waves-effect waves-light btn blue row">Save as New Template</button>
                         </div>
                         {this.renderAdminControls()}
                     </div>
@@ -334,39 +345,8 @@ class CreateSurvey extends Component{
         }
     }
 
-    render(){
-    return(
-        <div>
-            <div>
-                <label>Survey Name</label><br></br>
-                <span>{this.state.survey && this.state.survey.name ? this.state.survey.name : "N/A"}</span>
-            </div>
-            <div>
-                <div className="row">
-                    <button className="waves-effect waves-light btn blue col m6" onClick={this.toggleJSONEditor}>Toggle JSON Editor</button>
-                    <button className="waves-effect waves-light btn blue col m6" onClick={this.togglePreview}>Toggle Survey Preview</button>
-                </div>
-                <div className="row">
-                    <div className="col s12 m6">
-                        {this.renderEditPane()}
-                    </div>
-                    <div className="col s12 m6">
-                        {this.renderPreview()}
-                    </div>
-                </div>
-                
-                
-            </div>
-            <div className="row">
-                <button className="waves-effect waves-light btn light-green right modal-trigger" data-target="saveSurveyModal" style={{marginRight:10}}>Save</button>
-                <Link>
-                    <button className="waves-effect waves-light btn light-green right">Continue to Send Survey</button>
-                </Link>
-                
-            </div>
-            <div className="row">
-                {this.renderAdminControls()}
-            </div>
+    renderSaveModal(){
+        return(
             <div>
                 <div
                     ref={Modal => {
@@ -384,10 +364,69 @@ class CreateSurvey extends Component{
                     </a>
                 </div>
             </div>
-            
-        </div>
-        </div>
-    );
+            </div>
+        );
+    }
+
+    render(){
+        if(this.state.initializing)
+        {
+            return(
+                <div style={{textAlign: "center"}}>
+                    <h3>Loading Template Editor</h3>
+                    <div className="preloader-wrapper big active">
+                        <div className="spinner-layer spinner-blue-only">
+                            <div className="circle-clipper left">
+                                <div className="circle"></div>
+                            </div><div className="gap-patch">
+                                <div className="circle"></div>
+                            </div><div className="circle-clipper right">
+                                <div className="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {this.renderSaveModal()}
+                </div>
+            );
+        }
+        else{
+            return(
+                <div>
+                    <button className="waves-effect waves-light btn light-green right modal-trigger" data-target="saveSurveyModal" style={{marginRight:10}}>Save</button>
+                    <div>
+                        <label>Survey Name</label><br></br>
+                        <span>{this.state.survey && this.state.survey.name ? this.state.survey.name : "N/A"}</span>
+                    </div>
+                    <div>
+                        <div className="row">
+                            <button className="waves-effect waves-light btn blue col m6" onClick={this.toggleJSONEditor}>Toggle JSON Editor</button>
+                            <button className="waves-effect waves-light btn blue col m6" onClick={this.togglePreview}>Toggle Survey Preview</button>
+                        </div>
+                        <div className="row">
+                            <div className="col s12 m6">
+                                {this.renderEditPane()}
+                            </div>
+                            <div className="col s12 m6">
+                                {this.renderPreview()}
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <div className="row">
+                        <div className="row">
+                            <Link to="/surveys/new/emaily/">
+                                <button className="waves-effect waves-light btn light-green right">Continue to Send Survey</button>
+                            </Link>
+                        </div>
+                    </div>
+                    
+                    {this.renderSaveModal()}
+                </div>
+                
+            );
+        }
+    
     }
 }
 
