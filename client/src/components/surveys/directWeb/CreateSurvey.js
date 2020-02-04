@@ -19,7 +19,9 @@ class CreateSurvey extends Component{
         this.state={
             survey: null,
             showJSON: false,
-            showPreview: true
+            showPreview: true,
+            currentTemplateExistsUser: null,
+            currentTemplateExistsGlobal: null
         };
         this.updateStateFromEditor = this.updateStateFromEditor.bind(this);
         this.toggleJSONEditor = this.toggleJSONEditor.bind(this);
@@ -32,6 +34,9 @@ class CreateSurvey extends Component{
         this.removeQuestion = this.removeQuestion.bind(this);
         this.saveToMyTemplates = this.saveToMyTemplates.bind(this);
         this.saveToGlobalTemplates = this.saveToGlobalTemplates.bind(this);
+        this.loadModalState = this.loadModalState.bind(this);
+        this.clearModalState = this.clearModalState.bind(this);
+        this.renderAdminControls = this.renderAdminControls.bind(this);
     }
 
     async componentDidMount(){
@@ -46,11 +51,48 @@ class CreateSurvey extends Component{
         else{
             this.setState({survey: {message: "empty survey"}});
         }
+        const modalOptions = {
+            onOpenStart: this.loadModalState
+            ,
+            onOpenEnd: () => {
+            },
+            onCloseStart: this.clearModalState
+            ,
+            onCloseEnd: () => {
+            },
+            inDuration: 250,
+            outDuration: 250,
+            opacity: 0.5,
+            dismissible: true,
+            startingTop: "4%",
+            endingTop: "10%"
+          };
+          M.Modal.init(this.Modal, modalOptions);
         
     }
 
+    async loadModalState(){
+        if(this.state.survey._id){
+            const databaseRecord = (await axios.get("/api/surveys/template/"+this.state.survey._id)).data;
+            if(databaseRecord && databaseRecord._id === this.state.survey._id){
+                if(databaseRecord.owner === this.props.auth._id){
+                    await this.setState({currentTemplateExistsUser: true, currentTemplateExistsGlobal: false});
+                    return;
+                }
+                if(databaseRecord.owner === "global"){
+                    await this.setState({currentTemplateExistsUser: false, currentTemplateExistsGlobal: true});
+                    return;
+                }
+            }
+        }
+        await this.setState({currentTemplateExistsUser: false, currentTemplateExistsGlobal: false});
+    }
+
+    async clearModalState(){
+        await this.setState({currentTemplateExistsUser: null, currentTemplateExistsGlobal: null});
+    }
+
     async updateStateFromEditor(newObject){
-        console.log(newObject);
         if(!newObject.jsObject || newObject.jsObject==="" || newObject.jsObject === undefined){
             newObject.jsObject={};
         }
@@ -223,14 +265,75 @@ class CreateSurvey extends Component{
 
     renderAdminControls(){
         if(this.props.auth && this.props.auth.isAdmin){
+            if(this.state.currentTemplateExistsGlobal){
+                return(
+                    <div className="row">
+                        <h5>This survey template already exists in global templates</h5>
+                        <button className="waves-effect waves-light btn amber darken-3" onClick={this.saveToGlobalTemplates}>Overwrite Existing Global Template</button>
+                        <button className="waves-effect waves-light btn amber darken-3" onClick={this.saveToGlobalTemplates}>Save as a New Global Template</button>
+                    </div>
+                );
+            }
+            else{
+                //render save as new survey
+                return(
+                    <div className="row">
+                        <h5>This survey does not yet exist in global templates</h5>
+                        <button className="waves-effect waves-light btn amber darken-3" onClick={this.saveToGlobalTemplates}>Save as a NewGlobal Template</button>
+                    </div>
+                );
+            }
+        }
+        
+    }
+      
+    renderSaveSurveyModal(){
+        //NON ADMIN
+        if(this.state.currentTemplateExistsUser !== null){
+            if(this.state.currentTemplateExistsUser){
+                return(
+                    <div>
+                        <div className="row">
+                            <h5>This survey template already exists in your templates</h5>
+                            <button className="waves-effect waves-light btn blue">Overwrite Existing Template</button>
+                            <button className="waves-effect waves-light btn blue">Save as New Template</button>
+                        </div>
+                        {this.renderAdminControls()}
+                    </div>
+                    
+                );
+            }
+            else{
+                //render save as new survey
+                return(
+                    <div>
+                        <div className="row">
+                            <h5>This survey does not yet exist in your templates</h5>
+                            <button className="waves-effect waves-light btn blue">Save as New Template</button>
+                        </div>
+                        {this.renderAdminControls()}
+                    </div>
+                );
+            }
+            
+        }
+        else{
             return(
-                <div>
-                    <button className="waves-effect waves-light btn amber darken-3 right" onClick={this.saveToGlobalTemplates}>Save as global template</button>
+                <div className="preloader-wrapper big active">
+                    <div className="spinner-layer spinner-blue-only">
+                        <div className="circle-clipper left">
+                            <div className="circle"></div>
+                        </div><div className="gap-patch">
+                            <div className="circle"></div>
+                        </div><div className="circle-clipper right">
+                            <div className="circle"></div>
+                        </div>
+                    </div>
                 </div>
             );
         }
     }
-      
+
     render(){
     return(
         <div>
@@ -255,7 +358,7 @@ class CreateSurvey extends Component{
                 
             </div>
             <div className="row">
-                <button className="waves-effect waves-light btn light-green right" onClick={this.saveToMyTemplates} style={{marginRight:10}}>Save To My Templates</button>
+                <button className="waves-effect waves-light btn light-green right modal-trigger" data-target="saveSurveyModal" style={{marginRight:10}}>Save</button>
                 <Link>
                     <button className="waves-effect waves-light btn light-green right">Continue to Send Survey</button>
                 </Link>
@@ -264,6 +367,25 @@ class CreateSurvey extends Component{
             <div className="row">
                 {this.renderAdminControls()}
             </div>
+            <div>
+                <div
+                    ref={Modal => {
+                        this.Modal = Modal;
+                    }}
+                    id="saveSurveyModal"
+                    className="modal"
+                >
+                <div className="modal-content"  style={{textAlign: 'center'}}>
+                    {this.renderSaveSurveyModal()}
+                </div>
+                <div className="modal-footer">
+                    <a href="#" className="modal-close waves-effect waves-white btn-flat">
+                        Close
+                    </a>
+                </div>
+            </div>
+            
+        </div>
         </div>
     );
     }
