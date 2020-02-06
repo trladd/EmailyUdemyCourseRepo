@@ -9,7 +9,8 @@ const surveyTemplateSchema = new Schema({
     defaultIntroText: String,
     owner: String,
     questions: [SurveyFieldSchema],
-    addedDate: Date
+    addedDate: Date,
+    lastUpdated: Date
     
 });
 

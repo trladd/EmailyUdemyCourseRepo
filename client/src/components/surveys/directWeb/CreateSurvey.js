@@ -22,7 +22,7 @@ class CreateSurvey extends Component{
             showPreview: true,
             currentTemplateExistsUser: null,
             currentTemplateExistsGlobal: null,
-            initializing: false
+            initializing: true
         };
         this.updateStateFromEditor = this.updateStateFromEditor.bind(this);
         this.toggleJSONEditor = this.toggleJSONEditor.bind(this);
@@ -54,7 +54,7 @@ class CreateSurvey extends Component{
             this.setState({survey: {message: "empty survey"}});
         }
         this.initModal();
-          //this.setState({initializing: false});
+          this.setState({initializing: false});
         
     }
 
