@@ -62,7 +62,6 @@ module.exports = async app => {
                 survey
             });
         } catch (err){
-            console.log(err);
             res.status(422).send(err);
             
         }
@@ -107,6 +106,12 @@ module.exports = async app => {
      *          parameters:
      *              - in: body
      *                name: body
+     *                description: the survey in the body
+     *                schema:
+     *                  type: object
+     *                  properties:
+     *                      name:
+     *                          type: string
      *          responses:
      *              200:
      *                  description: add a survey
@@ -119,7 +124,7 @@ module.exports = async app => {
         const survey = new SurveyTemplate(req.body);
         survey.owner = "global";
         survey.addedDate = Date.now();
-        console.log(req.body);
+        
         try{
             await survey.save();
             res.send({
@@ -127,7 +132,6 @@ module.exports = async app => {
                 survey
             });
         } catch (err){
-            console.log(error);
             res.status(422).send(err);
             
         }
@@ -186,7 +190,6 @@ module.exports = async app => {
      */
     app.put('/api/surveys/template/:id', requireLogin, async (req, res) => {
         const template = await SurveyTemplate.findById(req.params.id);
-        console.log(template);
         if(template.owner != req.user._id){
             if(template.owner == "global"){
                 if(!req.user.isAdmin){
@@ -197,7 +200,7 @@ module.exports = async app => {
                 res.status(403).send("Requested template does not belong to requesting user");
             }
         }
-        const result = await SurveyTemplate.findByIdAndUpdate(req.body);
+        const result = await SurveyTemplate.findByIdAndUpdate(req.body._id,req.body);
         res.status(201).send({message: "updated", result: result});
     });
 
@@ -233,7 +236,7 @@ module.exports = async app => {
                 res.status(403).send("Requested template does not belong to requesting user");
             }
         }
-        const result = await SurveyTemplate.findByIdAndDelete(req.params.id);
+        const result = await SurveyTemplate.findByIdAndDelete(req.params._id);
         res.status(204).send(result);
     });
 
