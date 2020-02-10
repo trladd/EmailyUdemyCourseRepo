@@ -22,7 +22,7 @@ class CreateSurvey extends Component{
             showPreview: true,
             currentTemplateExistsUser: null,
             currentTemplateExistsGlobal: null,
-            initializing: false
+            initializing: true
         };
         this.updateStateFromEditor = this.updateStateFromEditor.bind(this);
         this.toggleJSONEditor = this.toggleJSONEditor.bind(this);
@@ -39,6 +39,8 @@ class CreateSurvey extends Component{
         this.clearModalState = this.clearModalState.bind(this);
         this.renderAdminControls = this.renderAdminControls.bind(this);
         this.initModal = this.initModal.bind(this);
+        this.deleteSurveyTemplate = this.deleteSurveyTemplate.bind(this);
+        this.updateSurveyTemplate = this.updateSurveyTemplate.bind(this);
     }
 
     async componentDidMount(){
@@ -53,8 +55,8 @@ class CreateSurvey extends Component{
         else{
             this.setState({survey: {message: "empty survey"}});
         }
+        this.setState({initializing: false});
         this.initModal();
-          //this.setState({initializing: false});
         
     }
 
@@ -270,14 +272,29 @@ class CreateSurvey extends Component{
         this.props.submitGlobalTemplate(this.state.survey,this.props.history);
     }
 
+    updateSurveyTemplate(){
+        this.props.updateSurveyTemplate(this.state.survey,this.props.history);
+    }
+
+    deleteSurveyTemplate(){
+        this.props.deleteSurveyTemplate(this.state.survey,this.props.history);
+    }
+
     renderAdminControls(){
         if(this.props.auth && this.props.auth.isAdmin){
             if(this.state.currentTemplateExistsGlobal){
                 return(
                     <div className="row">
                         <h5>This survey template already exists in global templates</h5>
-                        <button className="waves-effect waves-light btn amber darken-3 row" onClick={this.saveToGlobalTemplates}>Overwrite Existing Global Template</button>
-                        <button className="waves-effect waves-light btn amber darken-3 row" onClick={this.saveToGlobalTemplates}>Save as a New Global Template</button>
+                        <div className="row">
+                            <button className="waves-effect waves-light btn amber darken-3 row" onClick={this.updateSurveyTemplate}>Overwrite Existing Global Template</button>
+                        </div>
+                        <div className="row">
+                            <button className="waves-effect waves-light btn amber darken-3 row" onClick={this.saveToGlobalTemplates}>Save as a New Global Template</button>
+                        </div>
+                        <div className="row">
+                            <button className="waves-effect waves-light btn red row" onClick={this.deleteSurveyTemplate}>Delete Existing Template</button>
+                        </div>
                     </div>
                 );
             }
@@ -303,10 +320,13 @@ class CreateSurvey extends Component{
                         <div className="row">
                             <h5>This survey template already exists in your templates</h5>
                             <div className="row">
-                                <button className="waves-effect waves-light btn blue">Overwrite Existing Template</button>
+                                <button className="waves-effect waves-light btn blue" onClick={this.updateSurveyTemplate}>Overwrite Existing Template</button>
                             </div>
                             <div className="row">
-                                <button className="waves-effect waves-light btn blue row">Save as New Template</button>
+                                <button className="waves-effect waves-light btn blue row" onClick={this.saveToMyTemplates}>Save as New Template</button>
+                            </div>
+                            <div className="row">
+                                <button className="waves-effect waves-light btn red row" onClick={this.deleteSurveyTemplate}>Delete Existing Template</button>
                             </div>
                         </div>
                         {this.renderAdminControls()}
@@ -320,7 +340,7 @@ class CreateSurvey extends Component{
                     <div>
                         <div className="row">
                             <h5>This survey does not yet exist in your templates</h5>
-                            <button className="waves-effect waves-light btn blue row">Save as New Template</button>
+                            <button className="waves-effect waves-light btn blue row" onClick={this.saveToMyTemplates}>Save as New Template</button>
                         </div>
                         {this.renderAdminControls()}
                     </div>
@@ -359,16 +379,29 @@ class CreateSurvey extends Component{
                     {this.renderSaveSurveyModal()}
                 </div>
                 <div className="modal-footer">
+                    
+                
                     <a href="#" className="modal-close waves-effect waves-white btn-flat">
                         Close
                     </a>
                 </div>
             </div>
+            
             </div>
         );
     }
 
     render(){
+        return(
+            <div>
+                {this.renderInner()}
+                {this.renderSaveModal()}
+            </div>
+            
+        );
+    }
+
+    renderInner(){
         if(this.state.initializing)
         {
             return(
@@ -385,14 +418,13 @@ class CreateSurvey extends Component{
                             </div>
                         </div>
                     </div>
-                    {this.renderSaveModal()}
                 </div>
             );
         }
         else{
             return(
                 <div>
-                    <button className="waves-effect waves-light btn light-green right modal-trigger" data-target="saveSurveyModal" style={{marginRight:10}}>Save</button>
+                    <button className="waves-effect waves-light btn light-green right modal-trigger" data-target="saveSurveyModal" style={{marginRight:10}}>Save Options</button>
                     <div>
                         <label>Survey Name</label><br></br>
                         <span>{this.state.survey && this.state.survey.name ? this.state.survey.name : "N/A"}</span>
@@ -421,7 +453,7 @@ class CreateSurvey extends Component{
                         </div>
                     </div>
                     
-                    {this.renderSaveModal()}
+                    
                 </div>
                 
             );

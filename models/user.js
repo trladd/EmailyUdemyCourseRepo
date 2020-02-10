@@ -11,7 +11,8 @@ const userSchema = new Schema({// will be able to create other properties to add
     lastName: String,
     email: String,
     emailVerified: String,
-    profileImageURL: String
+    profileImageURL: String,
+    isAdmin: { type: Boolean, default: false }
 });
 
 mongoose.model('users', userSchema); // puts user object into mongo

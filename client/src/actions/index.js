@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FETCH_USER, FETCH_SURVEYS, FETCH_GLOBAL_TEMPLATES, FETCH_USER_TEMPLATES} from './types';
+import {FETCH_USER, FETCH_SURVEYS, FETCH_GLOBAL_TEMPLATES, FETCH_USER_TEMPLATES, FETCH_ALL_TEMPLATES} from './types';
 
 /**
  * Using redux thunk this is an action creator
@@ -54,5 +54,17 @@ export const submitGlobalTemplate = (surveyObj, history) => async dispatch => {
     const res = await axios.post('/api/surveys/templates/global', surveyObj);
     history.push('/surveys/new/emaily/templates?templates=global');
     dispatch({type: FETCH_GLOBAL_TEMPLATES, payload: res.data});
+};
+
+export const updateSurveyTemplate = (surveyObj, history) => async dispatch => {
+    const res = await axios.put('/api/surveys/template/'+surveyObj._id, surveyObj);
+    history.push('/surveys/new/emaily/templates?templates=user');
+    dispatch({type: FETCH_ALL_TEMPLATES, payload: res.data});
+};
+
+export const deleteSurveyTemplate = (surveyObj, history) => async dispatch => {
+    const res = await axios.delete('/api/surveys/template/'+surveyObj._id, surveyObj);
+    history.push('/surveys/new/emaily/templates?templates=user');
+    dispatch({type: FETCH_ALL_TEMPLATES, payload: res.data});
 };
 

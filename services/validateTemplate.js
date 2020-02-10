@@ -1,0 +1,3 @@
+validateTemplate()
+
+module.exports={};
