@@ -1,10 +1,7 @@
-const _ = require('lodash');
-const { Path } = require('path-parser');
-const { URL } = require('url');
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireAdmin = require('../middlewares/requireAdmin');
-const requireCredits = require('../middlewares/requireCredits');
+const templateUtils = require('../util/templateUtils');
 
 
 
@@ -52,7 +49,8 @@ module.exports = async app => {
      *                  description: user must be logged in
      */
     app.post('/api/surveys/templates/user', requireLogin, async (req, res) => {
-        const survey = new SurveyTemplate(req.body);
+        const cleanedSurvey = templateUtils.clearAllIDs(req.body);
+        const survey = new SurveyTemplate(cleanedSurvey);
         survey.owner = req.user.id;
         survey.addedDate = Date.now();
         try{
@@ -121,7 +119,8 @@ module.exports = async app => {
      *                  description: user does not have administrator rights
      */
     app.post('/api/surveys/templates/global', requireAdmin, async (req, res) => {
-        const survey = new SurveyTemplate(req.body);
+        const cleanedSurvey = templateUtils.clearAllIDs(req.body);
+        const survey = new SurveyTemplate(cleanedSurvey);
         survey.owner = "global";
         survey.addedDate = Date.now();
         
@@ -200,7 +199,8 @@ module.exports = async app => {
                 res.status(403).send("Requested template does not belong to requesting user");
             }
         }
-        const result = await SurveyTemplate.findByIdAndUpdate(req.body._id,req.body);
+        const cleanedSurvey = templateUtils.clearAllIDs(req.body);
+        const result = await SurveyTemplate.findByIdAndUpdate(req.body._id,cleanedSurvey);
         res.status(201).send({message: "updated", result: result});
     });
 
@@ -236,7 +236,7 @@ module.exports = async app => {
                 res.status(403).send("Requested template does not belong to requesting user");
             }
         }
-        const result = await SurveyTemplate.findByIdAndDelete(req.params._id);
+        const result = await SurveyTemplate.findByIdAndDelete(req.params.id);
         res.status(204).send(result);
     });
 

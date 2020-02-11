@@ -11,8 +11,8 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import defaultQuestion from './defaultQuestion';
 import * as actions from '../../../actions';
 import {connect} from 'react-redux';
+import {validateSurveyTemplate, validateSurveyQuestion} from '../../../utils/validateTemplates';
     
-
 class CreateSurvey extends Component{
     constructor(){
         super();
@@ -22,7 +22,8 @@ class CreateSurvey extends Component{
             showPreview: true,
             currentTemplateExistsUser: null,
             currentTemplateExistsGlobal: null,
-            initializing: true
+            initializing: true,
+            templateErrors: null
         };
         this.updateStateFromEditor = this.updateStateFromEditor.bind(this);
         this.toggleJSONEditor = this.toggleJSONEditor.bind(this);
@@ -41,6 +42,7 @@ class CreateSurvey extends Component{
         this.initModal = this.initModal.bind(this);
         this.deleteSurveyTemplate = this.deleteSurveyTemplate.bind(this);
         this.updateSurveyTemplate = this.updateSurveyTemplate.bind(this);
+        this.runSurveyTemplateValidation = this.runSurveyTemplateValidation.bind(this);
     }
 
     async componentDidMount(){
@@ -135,15 +137,10 @@ class CreateSurvey extends Component{
                 height      = '100%'
                 width       = '100%'
                 onChange = {this.updateStateFromEditor}
-
             />
         );
     }
 
-    /**
-     * 
-     * @param {*} questionObject 
-     */
     updateQuestion(questionObject){
         const indexToUpdate = _.findIndex(this.state.survey.questions, {_id:questionObject._id});
         const tempObject = this.state.survey;
@@ -311,58 +308,87 @@ class CreateSurvey extends Component{
         
     }
       
-    renderSaveSurveyModal(){
-        //NON ADMIN
-        if(this.state.currentTemplateExistsUser !== null){
-            if(this.state.currentTemplateExistsUser){
-                return(
-                    <div>
-                        <div className="row">
-                            <h5>This survey template already exists in your templates</h5>
-                            <div className="row">
-                                <button className="waves-effect waves-light btn blue" onClick={this.updateSurveyTemplate}>Overwrite Existing Template</button>
-                            </div>
-                            <div className="row">
-                                <button className="waves-effect waves-light btn blue row" onClick={this.saveToMyTemplates}>Save as New Template</button>
-                            </div>
-                            <div className="row">
-                                <button className="waves-effect waves-light btn red row" onClick={this.deleteSurveyTemplate}>Delete Existing Template</button>
-                            </div>
-                        </div>
-                        {this.renderAdminControls()}
-                    </div>
-                    
-                );
-            }
-            else{
-                //render save as new survey
-                return(
-                    <div>
-                        <div className="row">
-                            <h5>This survey does not yet exist in your templates</h5>
-                            <button className="waves-effect waves-light btn blue row" onClick={this.saveToMyTemplates}>Save as New Template</button>
-                        </div>
-                        {this.renderAdminControls()}
-                    </div>
-                );
-            }
-            
+    async runSurveyTemplateValidation(){
+        let validationResult = validateSurveyTemplate(this.state.survey);
+        if(validationResult === 1){
+            await this.setState({templateErrors: null});
         }
         else{
+            await this.setState({templateErrors: validationResult});
+        }
+        return;
+    }
+
+    renderSaveSurveyModal(){
+        //NON ADMIN
+        if(validateSurveyTemplate(this.state.survey) !== 1){
             return(
-                <div className="preloader-wrapper big active">
-                    <div className="spinner-layer spinner-blue-only">
-                        <div className="circle-clipper left">
-                            <div className="circle"></div>
-                        </div><div className="gap-patch">
-                            <div className="circle"></div>
-                        </div><div className="circle-clipper right">
-                            <div className="circle"></div>
-                        </div>
-                    </div>
+                <div className="container red-text" style={{textAlign:"center"}}>
+                    <h5>Template Errors Detected</h5>
+                    <p>You have one or more errors on your survey template. Please address the following errors in your template</p>
+                    <ul>
+                        {validateSurveyTemplate(this.state.survey).map(error => {
+                            return (
+                            <li className="red-text">{error}</li>
+                            );
+                            })}
+                    </ul>
                 </div>
             );
         }
+        else{
+            if(this.state.currentTemplateExistsUser !== null){
+                if(this.state.currentTemplateExistsUser){
+                    return(
+                        <div>
+                            <div className="row">
+                                <h5>This survey template already exists in your templates</h5>
+                                <div className="row">
+                                    <button className="waves-effect waves-light btn blue" onClick={this.updateSurveyTemplate}>Overwrite Existing Template</button>
+                                </div>
+                                <div className="row">
+                                    <button className="waves-effect waves-light btn blue row" onClick={this.saveToMyTemplates}>Save as New Template</button>
+                                </div>
+                                <div className="row">
+                                    <button className="waves-effect waves-light btn red row" onClick={this.deleteSurveyTemplate}>Delete Existing Template</button>
+                                </div>
+                            </div>
+                            {this.renderAdminControls()}
+                        </div>
+                        
+                    );
+                }
+                else{
+                    //render save as new survey
+                    return(
+                        <div>
+                            <div className="row">
+                                <h5>This survey does not yet exist in your templates</h5>
+                                <button className="waves-effect waves-light btn blue row" onClick={this.saveToMyTemplates}>Save as New Template</button>
+                            </div>
+                            {this.renderAdminControls()}
+                        </div>
+                    );
+                }
+                
+            }
+            else{
+                return(
+                    <div className="preloader-wrapper big active">
+                        <div className="spinner-layer spinner-blue-only">
+                            <div className="circle-clipper left">
+                                <div className="circle"></div>
+                            </div><div className="gap-patch">
+                                <div className="circle"></div>
+                            </div><div className="circle-clipper right">
+                                <div className="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+        }
+        
     }
 
     renderSaveModal(){

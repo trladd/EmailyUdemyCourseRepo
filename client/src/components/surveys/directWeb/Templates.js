@@ -94,26 +94,37 @@ class Templates extends Component{
     }
 
     async toggleType(){
-        this.setState({initializing: true});
+        
         if(this.state.templateType==="User"){
+            await this.setState({initializing: true, templateType:"Global"});
             await this.props.fetchGlobalSurveyTemplates();
-            await this.setState({templates:this.props.globalTemplates, templateType:"Global"});
+            await this.setState({templates:this.props.globalTemplates});
         }
         else{
+            await this.setState({initializing: true, templateType:"User"});
             await this.props.fetchUserSurveyTemplates();
-            await this.setState({templates:this.props.userTemplates, templateType:"User"});
+            await this.setState({templates:this.props.userTemplates});
         }
         this.setState({initializing: false});
+    }
+
+    getToggleChecked(){
+        if(this.state.templateType==="User"){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     render(){
         return(
             <div>
-                <div class="switch">
+                <div className="switch">
                 <label>
                 Global
-                <input onChange={this.toggleType} type="checkbox" />
-                <span class="lever"></span>
+                <input onChange={this.toggleType} type="checkbox" checked={!!this.getToggleChecked()}/>
+                <span className="lever"></span>
                 Saved User Templates
                 </label>
             </div>
