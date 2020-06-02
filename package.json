@@ -11,8 +11,10 @@
     "test": "jest --testTimeout=10000",
     "start": "node index.js",
     "server": "nodemon index.js",
+    "debugServer": "nodemon --inspect-brk index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "debug": "concurrently \"npm run debugServer\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "",
@@ -25,6 +27,7 @@
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.7.12",
+    "nodemailer": "^6.4.2",
     "nodemon": "^2.0.1",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",
