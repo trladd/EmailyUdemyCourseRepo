@@ -20,7 +20,7 @@ class Templates extends Component{
 
     async componentDidMount(){
         const queryParams = queryString.parse(this.props.location.search);
-        if(queryParams.templates && queryParams.templates == "user"){
+        if(queryParams.templates && queryParams.templates === "user"){
             await this.props.fetchUserSurveyTemplates();
             await this.setState({templates:this.props.userTemplates, templateType:"User"});
         }
